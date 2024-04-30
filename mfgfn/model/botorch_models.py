@@ -3,10 +3,10 @@ from typing import Optional, Type, Union
 
 import torch
 from botorch.models.approximate_gp import (
-    MIN_INFERRED_NOISE_LEVEL,
     ApproximateGP,
     ApproximateGPyTorchModel,
 )
+from botorch.models.utils.gpytorch_modules import MIN_INFERRED_NOISE_LEVEL
 from botorch.models.kernels.linear_truncated_fidelity import (
     LinearTruncatedFidelityKernel,
 )
