@@ -1,7 +1,8 @@
-from gflownet.envs.base import GFlowNetEnv as BaseGFlowNetEnv
-import torch
 import pickle
 import time
+
+import torch
+from gflownet.envs.base import GFlowNetEnv as BaseGFlowNetEnv
 
 
 class GFlowNetEnv(BaseGFlowNetEnv):

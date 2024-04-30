@@ -3,7 +3,7 @@
 defaults:
   # - _self_
   - env: amp
-  - true_oracle: amp
+#   - true_oracle: amp
   # last must be the best for project function to work as expected
   - oracle@_oracle_dict.1: amp1
   - oracle@_oracle_dict.2: amp2

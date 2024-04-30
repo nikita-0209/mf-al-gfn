@@ -1,10 +1,10 @@
-from botorch.models.utils.inducing_point_allocators import (
-    InducingPointAllocator,
-    NEG_INF,
-    _pivoted_cholesky_init,
-    UnitQualityFunction,
-)
 import torch
+from botorch.models.utils.inducing_point_allocators import (
+    NEG_INF,
+    InducingPointAllocator,
+    UnitQualityFunction,
+    _pivoted_cholesky_init,
+)
 
 
 class MultiFidelityInducingPointAllocator(InducingPointAllocator):

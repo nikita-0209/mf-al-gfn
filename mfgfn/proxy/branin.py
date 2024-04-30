@@ -1,11 +1,11 @@
-from gflownet.proxy.base import Proxy
+import matplotlib.pyplot as plt
 import numpy as np
 import torch
-from torchtyping import TensorType
-import matplotlib.pyplot as plt
 from botorch.test_functions.multi_fidelity import AugmentedBranin
-from mpl_toolkits.axes_grid1 import make_axes_locatable
 from botorch.test_functions.synthetic import Branin as BotorchBranin
+from gflownet.proxy.base import Proxy
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+from torchtyping import TensorType
 
 
 class Branin(Proxy):

@@ -1,12 +1,14 @@
 import math
+
+import hydra
 import numpy as np
 import torch
-from torch import nn, Tensor
-from torch.nn import functional as F
-import hydra
-from mfgfn.model.mlm import sample_mask
-from mfgfn.model.masked_layers import mResidualBlock
 from gflownet.utils.common import set_device, set_float_precision
+from torch import Tensor, nn
+from torch.nn import functional as F
+
+from mfgfn.model.masked_layers import mResidualBlock
+from mfgfn.model.mlm import sample_mask
 
 
 class LanguageModel(nn.Module):

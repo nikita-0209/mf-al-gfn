@@ -1,4 +1,4 @@
-_target_: model.regressive.RegressiveMLP
+_target_: mfgfn.model.regressive.RegressiveMLP
 
 # Choose between full (BMBO-DARN) or seq (DNN-MFBO) implementation
 regressive_mode: "full"

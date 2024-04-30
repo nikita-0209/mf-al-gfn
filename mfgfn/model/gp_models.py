@@ -1,25 +1,23 @@
-import torch
-import numpy as np
 import abc
 
-from scipy.stats import spearmanr
-
-from botorch.models import SingleTaskGP, SingleTaskVariationalGP, KroneckerMultiTaskGP
+import numpy as np
+import torch
+from botorch.models import KroneckerMultiTaskGP, SingleTaskGP, SingleTaskVariationalGP
+from gpytorch import kernels, lazify, likelihoods
+from gpytorch.kernels.kernel import ProductKernel
+from gpytorch.lazy import ConstantDiagLazyTensor
 from gpytorch.mlls import ExactMarginalLogLikelihood, VariationalELBO
+from gpytorch.settings import cholesky_jitter
 from gpytorch.utils.memoize import clear_cache_hook
-from gpytorch import likelihoods, kernels
+from gpytorch.variational import IndependentMultitaskVariationalStrategy
+from scipy.stats import spearmanr
 
 from mfgfn.model.metrics import quantile_calibration
 
-from gpytorch.variational import IndependentMultitaskVariationalStrategy
-from gpytorch.settings import cholesky_jitter
-from gpytorch.lazy import ConstantDiagLazyTensor
-from gpytorch import lazify
 from .botorch_models import (
-    SingleTaskMultiFidelityVariationalGP,
     SingleTaskMultiFidelityLikeBotorchVariationalGP,
+    SingleTaskMultiFidelityVariationalGP,
 )
-from gpytorch.kernels.kernel import ProductKernel
 
 
 class BaseGPSurrogate(abc.ABC):
@@ -162,9 +160,9 @@ class BaseGPSurrogate(abc.ABC):
         ):
             metrics["lengthscale"] = covar_module.base_kernel.lengthscale.mean().item()
         elif hasattr(covar_module, "data_covar_module"):
-            metrics[
-                "lengthscale"
-            ] = covar_module.data_covar_module.lengthscale.mean().item()
+            metrics["lengthscale"] = (
+                covar_module.data_covar_module.lengthscale.mean().item()
+            )
         elif (
             hasattr(covar_module, "lengthscale")
             and covar_module.lengthscale is not None
@@ -874,9 +872,9 @@ class SingleTaskMultiFidelitySVGP(
         ):
             metrics["lengthscale"] = covar_module.base_kernel.lengthscale.mean().item()
         elif hasattr(covar_module, "data_covar_module"):
-            metrics[
-                "lengthscale"
-            ] = covar_module.data_covar_module.lengthscale.mean().item()
+            metrics["lengthscale"] = (
+                covar_module.data_covar_module.lengthscale.mean().item()
+            )
         elif hasattr(covar_module, "lengthscale"):
             metrics["lengthscale"] = covar_module.lengthscale.mean().item()
         else:

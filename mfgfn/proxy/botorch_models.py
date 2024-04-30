@@ -1,9 +1,9 @@
 import torch
-from botorch.models.model import Model
-from gpytorch.distributions import MultivariateNormal, MultitaskMultivariateNormal
-from botorch.posteriors.gpytorch import GPyTorchPosterior
 from botorch.acquisition.cost_aware import CostAwareUtility
+from botorch.models.model import Model
+from botorch.posteriors.gpytorch import GPyTorchPosterior
 from gflownet.utils.common import set_device, set_float_precision
+from gpytorch.distributions import MultitaskMultivariateNormal, MultivariateNormal
 
 
 class FidelityCostModel(CostAwareUtility):

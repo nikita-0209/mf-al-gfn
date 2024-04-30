@@ -1,32 +1,34 @@
-import torch
+import copy
+import math
+import os
+from typing import List
+
 import gpytorch
 import hydra
-from gflownet.utils.common import set_device, set_float_precision
-from mfgfn.utils.dkl_utils import batched_call
-from gpytorch.settings import cholesky_jitter
-from gpytorch.lazy import ConstantDiagLazyTensor
-import math
-from torch import LongTensor
-from gpytorch import lazify
-import numpy as np
-from torch.nn import functional as F
-from mfgfn.model.mlm import sample_mask
-from gpytorch.variational import IndependentMultitaskVariationalStrategy
-from gpytorch.mlls import ExactMarginalLogLikelihood, VariationalELBO
-from mfgfn.model.mlm import mlm_eval_epoch as mlm_eval_epoch_lm
-from mfgfn.model.shared_elements import check_early_stopping
-import copy
-from torch.nn.utils.rnn import pad_sequence
-import os
-from tqdm import tqdm
-import wandb
-from mfgfn.model.regressive import RegressiveMLP
-from mfgfn.model.mlp import MLP
-from mpl_toolkits.axes_grid1 import make_axes_locatable
 import matplotlib.pyplot as plt
+import numpy as np
+import torch
+import wandb
+from gflownet.utils.common import set_device, set_float_precision
+from gpytorch import lazify
+from gpytorch.lazy import ConstantDiagLazyTensor
+from gpytorch.mlls import ExactMarginalLogLikelihood, VariationalELBO
+from gpytorch.settings import cholesky_jitter
+from gpytorch.variational import IndependentMultitaskVariationalStrategy
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+from torch import LongTensor
+from torch.nn import functional as F
+from torch.nn.utils.rnn import pad_sequence
 from torch.optim.lr_scheduler import MultiStepLR
 from torchtyping import TensorType
-from typing import List
+from tqdm import tqdm
+
+from mfgfn.model.mlm import mlm_eval_epoch as mlm_eval_epoch_lm
+from mfgfn.model.mlm import sample_mask
+from mfgfn.model.mlp import MLP
+from mfgfn.model.regressive import RegressiveMLP
+from mfgfn.model.shared_elements import check_early_stopping
+from mfgfn.utils.dkl_utils import batched_call
 
 
 class Tokenizer:
@@ -69,9 +71,11 @@ class Tokenizer:
         # find the index of the first [PAD] token
         # replace that index with [EOS] token
         index = [
-            torch.where(sequence == self.padding_idx)[0][0]
-            if sequence[-1] == self.padding_idx
-            else len(sequence)
+            (
+                torch.where(sequence == self.padding_idx)[0][0]
+                if sequence[-1] == self.padding_idx
+                else len(sequence)
+            )
             for sequence in sequence_tensor
         ]
         # Padding element is added to all sequences so that [EOS] token can be added post the sequence, i.e,

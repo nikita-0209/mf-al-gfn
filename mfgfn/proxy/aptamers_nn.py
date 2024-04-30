@@ -1,9 +1,10 @@
-from gflownet.proxy.base import Proxy
+import math
+import time
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import math
-import time
+from gflownet.proxy.base import Proxy
 
 
 class MLP(nn.Module):

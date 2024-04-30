@@ -1,6 +1,8 @@
 import os
+
 import torch
 from gflownet.proxy.base import Proxy
+
 from mfgfn.proxy.mol_oracles.ipea_xtb import XTB_IPEA
 
 """

@@ -1,6 +1,6 @@
-from gflownet.proxy.base import Proxy
-import torch
 import numpy as np
+import torch
+from gflownet.proxy.base import Proxy
 
 
 class DropoutRegressor(Proxy):

@@ -1,5 +1,5 @@
 # Incomplete. Need to add transofmer specific parameters like embedding_dim
-_target_: model.mlp.Transformer
+_target_: mfgfn.model.mlp.Transformer
 activation: 'relu'
 
 hidden_dim: 256

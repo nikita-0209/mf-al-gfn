@@ -1,16 +1,15 @@
-from gflownet.gflownet import GFlowNetAgent
-import torch.nn as nn
-from gflownet.utils.common import set_device, set_float_precision, torch2np
+import time
+from collections import defaultdict
+
 import numpy as np
 import torch
-import time
-from torch.distributions import Categorical
-from tqdm import tqdm
+import torch.nn as nn
 from gflownet.envs.base import Buffer
-from collections import defaultdict
-from torch.distributions import Categorical, Bernoulli
-
+from gflownet.gflownet import GFlowNetAgent
+from gflownet.utils.common import set_device, set_float_precision, torch2np
+from torch.distributions import Bernoulli, Categorical
 from torchtyping import TensorType
+from tqdm import tqdm
 
 
 class Policy:
@@ -358,9 +357,11 @@ class PPOAgent(GFlowNetAgent):
 
         masks_s = torch.cat(
             [
-                masks_sp[torch.where((state_id == sid - 1) & (traj_id == pid))]
-                if sid > 1
-                else self.mask_source
+                (
+                    masks_sp[torch.where((state_id == sid - 1) & (traj_id == pid))]
+                    if sid > 1
+                    else self.mask_source
+                )
                 for sid, pid in zip(state_id, traj_id)
             ]
         )
@@ -374,9 +375,9 @@ class PPOAgent(GFlowNetAgent):
             if i == 0:
                 G[0 : non_zero_indices[i]] = non_zero_elements[i]
             else:
-                G[
-                    non_zero_indices[i - 1] + 1 : non_zero_indices[i]
-                ] = non_zero_elements[i]
+                G[non_zero_indices[i - 1] + 1 : non_zero_indices[i]] = (
+                    non_zero_elements[i]
+                )
         # use all s and sp to compute all adv
         with torch.no_grad():
             v_s = self.forward_policy(self.env.statetorch2policy(states))[:, -1]

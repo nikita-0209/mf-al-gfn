@@ -1,16 +1,17 @@
-from sklearn.utils import shuffle
-from torch.utils.data import Dataset, DataLoader
-import torch
-from torch.nn.utils.rnn import pad_sequence
-import numpy as np
 from pathlib import Path
-from sklearn.model_selection import train_test_split
-import pandas as pd
-import matplotlib.pyplot as plt
-from gflownet.utils.common import set_device, set_float_precision
-from torch.nn.utils.rnn import pad_sequence
-from torchtyping import TensorType
 from typing import List
+
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import torch
+from gflownet.utils.common import set_device, set_float_precision
+from sklearn.model_selection import train_test_split
+from sklearn.utils import shuffle
+from torch.nn.utils.rnn import pad_sequence
+from torch.utils.data import DataLoader, Dataset
+from torchtyping import TensorType
+
 from mfgfn.utils.common import get_figure_plots
 
 
@@ -97,7 +98,6 @@ class DataHandler:
             indices = torch.where(data == -0.0)
             data[indices] = 0.0
         return data
-
 
     def initialise_dataset(self):
         # TODO: Modify to ensure validation set has equal number of points across fidelities
@@ -499,7 +499,7 @@ class DataHandler:
             [],
             [],
         )
-        for (_sequence, _label) in batch:
+        for _sequence, _label in batch:
             y.append(_label)
             x.append(_sequence)
         y = torch.tensor(y, dtype=self.float)  # , device=self.device

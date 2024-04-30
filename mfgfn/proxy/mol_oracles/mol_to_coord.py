@@ -1,6 +1,11 @@
-import os, random, shutil, string, traceback
-from rdkit import Chem
+import os
+import random
+import shutil
+import string
+import traceback
+
 import selfies as sf
+from rdkit import Chem
 
 from mfgfn.proxy.mol_oracles.geom_opt import get_rdkit_ff_coordinates, run_gfn_xtb
 

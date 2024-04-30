@@ -1,34 +1,39 @@
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+import torch
+from botorch.acquisition.cost_aware import InverseCostWeightedUtility
 from botorch.acquisition.max_value_entropy_search import (
-    qMultiFidelityLowerBoundMaxValueEntropy,
-    qMultiFidelityMaxValueEntropy,
     qLowerBoundMaxValueEntropy,
     qMaxValueEntropy,
+    qMultiFidelityLowerBoundMaxValueEntropy,
+    qMultiFidelityMaxValueEntropy,
 )
+from botorch.models.cost import AffineFidelityCostModel
 from gflownet.proxy.base import Proxy
-from pathlib import Path
-import pandas as pd
+from gpytorch.functions import inv_quad
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+
+from mfgfn.regressor.gp import SingleFidelitySingleTaskRegressor
+from mfgfn.regressor.regressor import DropoutRegressor as SurrogateDropoutRegressor
+
 from .botorch_models import (
     MultifidelityOracleModel,
     MultiFidelityProxyModel,
     ProxyBotorchMES,
 )
-import torch
-import numpy as np
-from botorch.models.cost import AffineFidelityCostModel
-from botorch.acquisition.cost_aware import InverseCostWeightedUtility
-
-from gpytorch.functions import inv_quad
-from mpl_toolkits.axes_grid1 import make_axes_locatable
-from mfgfn.regressor.regressor import DropoutRegressor as SurrogateDropoutRegressor
-from mfgfn.regressor.gp import SingleFidelitySingleTaskRegressor
 
 CLAMP_LB = 1.0e-8
-from botorch.models.utils import check_no_nans
-from .botorch_models import FidelityCostModel
 from abc import abstractmethod
+
 import matplotlib.pyplot as plt
-from mfgfn.regressor.dkl import DeepKernelRegressor
+from botorch.models.utils import check_no_nans
+
 from mfgfn.env.grid import Grid
+from mfgfn.regressor.dkl import DeepKernelRegressor
+
+from .botorch_models import FidelityCostModel
 
 
 class SingleFidelityMES(Proxy):

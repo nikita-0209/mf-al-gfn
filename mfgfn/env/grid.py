@@ -1,14 +1,16 @@
-from gflownet.envs.grid import Grid as GflowNetGrid
-import torch
-from torchtyping import TensorType
+import random
 from typing import List, Tuple
-from mfgfn.env.base import GFlowNetEnv
+
 import matplotlib.pyplot as plt
 import numpy as np
-from mpl_toolkits.axes_grid1 import make_axes_locatable
 import pandas as pd
+import torch
+from gflownet.envs.grid import Grid as GflowNetGrid
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+from torchtyping import TensorType
+
+from mfgfn.env.base import GFlowNetEnv
 from mfgfn.proxy.branin import MultiFidelityBranin, SingleFidelityBranin
-import random
 
 
 class Grid(GFlowNetEnv, GflowNetGrid):

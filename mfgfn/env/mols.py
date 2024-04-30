@@ -1,13 +1,14 @@
-import torch
-from torchtyping import TensorType
 from typing import List, Tuple
 
-from gflownet.envs.sequence import Sequence as GflowNetSequence
-from mfgfn.utils.selfies import SELFIES_VOCAB_SMALL, SELFIES_VOCAB_LARGE
-from mfgfn.env.base import GFlowNetEnv
+import matplotlib.pyplot as plt
 import pandas as pd
 import selfies as sf
-import matplotlib.pyplot as plt
+import torch
+from gflownet.envs.sequence import Sequence as GflowNetSequence
+from torchtyping import TensorType
+
+from mfgfn.env.base import GFlowNetEnv
+from mfgfn.utils.selfies import SELFIES_VOCAB_LARGE, SELFIES_VOCAB_SMALL
 
 
 class GFlowNetMolSelfies(GflowNetSequence):

@@ -1,13 +1,15 @@
-from gflownet.envs.aptamers import Aptamers as GflowNetAptamers
-import torch
-from torchtyping import TensorType
-from typing import List, Tuple
-from mfgfn.env.base import GFlowNetEnv
-import numpy as np
-import matplotlib.pyplot as plt
-import pandas as pd
-from pathlib import Path
 import random
+from pathlib import Path
+from typing import List, Tuple
+
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import torch
+from gflownet.envs.aptamers import Aptamers as GflowNetAptamers
+from torchtyping import TensorType
+
+from mfgfn.env.base import GFlowNetEnv
 
 
 def split_str(s):

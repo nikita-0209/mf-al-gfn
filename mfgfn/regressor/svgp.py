@@ -1,16 +1,19 @@
-import torch
-import torch.nn as nn
-from mfgfn.regressor.dkl import DeepKernelRegressor
-from gflownet.utils.common import set_device, set_float_precision
 import copy
-import hydra
 import math
-from tqdm import tqdm
-from mfgfn.model.shared_elements import check_early_stopping
-import wandb
-from mpl_toolkits.axes_grid1 import make_axes_locatable
+
+import hydra
 import matplotlib.pyplot as plt
 import numpy as np
+import torch
+import torch.nn as nn
+import wandb
+from gflownet.utils.common import set_device, set_float_precision
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+from tqdm import tqdm
+
+from mfgfn.model.shared_elements import check_early_stopping
+from mfgfn.regressor.dkl import DeepKernelRegressor
+
 
 # TODO: Change this to a class that DOES NOT inherit from nn.Module
 # Breaks line 348 in model/gp_models.py

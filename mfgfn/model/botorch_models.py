@@ -1,45 +1,46 @@
+import copy
+from typing import Optional, Type, Union
+
+import torch
 from botorch.models.approximate_gp import (
+    MIN_INFERRED_NOISE_LEVEL,
     ApproximateGP,
     ApproximateGPyTorchModel,
-    MIN_INFERRED_NOISE_LEVEL,
 )
-from typing import Optional, Type, Union
-from torch import Tensor
-from gpytorch.variational import (
-    _VariationalDistribution,
-    _VariationalStrategy,
-    CholeskyVariationalDistribution,
-    IndependentMultitaskVariationalStrategy,
-    VariationalStrategy,
+from botorch.models.kernels.linear_truncated_fidelity import (
+    LinearTruncatedFidelityKernel,
 )
-from gpytorch.kernels import Kernel, MaternKernel, IndexKernel, ScaleKernel
+from botorch.models.transforms.input import InputTransform
+from botorch.models.transforms.outcome import OutcomeTransform
+from botorch.models.utils import validate_input_scaling
+from botorch.models.utils.inducing_point_allocators import (
+    GreedyVarianceReduction,
+    InducingPointAllocator,
+    _pivoted_cholesky_init,
+)
+from botorch.posteriors.gpytorch import GPyTorchPosterior
+from gpytorch.constraints import GreaterThan
+from gpytorch.distributions import MultivariateNormal
+from gpytorch.kernels import IndexKernel, Kernel, MaternKernel, ScaleKernel
 from gpytorch.likelihoods import (
     GaussianLikelihood,
     Likelihood,
     MultitaskGaussianLikelihood,
 )
 from gpytorch.means import ConstantMean, Mean
-import copy
-import torch
-from gpytorch.priors import GammaPrior
-from botorch.posteriors.gpytorch import GPyTorchPosterior
-
-from botorch.models.utils.inducing_point_allocators import _pivoted_cholesky_init
-from botorch.models.transforms.outcome import OutcomeTransform
-from botorch.models.transforms.input import InputTransform
-from botorch.models.utils import validate_input_scaling
-from gpytorch.constraints import GreaterThan
-from gpytorch.utils.memoize import clear_cache_hook
 from gpytorch.module import Module
-from gpytorch.distributions import MultivariateNormal
-from botorch.models.utils.inducing_point_allocators import (
-    GreedyVarianceReduction,
-    InducingPointAllocator,
+from gpytorch.priors import GammaPrior
+from gpytorch.utils.memoize import clear_cache_hook
+from gpytorch.variational import (
+    CholeskyVariationalDistribution,
+    IndependentMultitaskVariationalStrategy,
+    VariationalStrategy,
+    _VariationalDistribution,
+    _VariationalStrategy,
 )
+from torch import Tensor
+
 from .inducing_point_allocator import MultiFidelityGreedyVarianceReduction
-from botorch.models.kernels.linear_truncated_fidelity import (
-    LinearTruncatedFidelityKernel,
-)
 
 
 class SingleTaskMultiFidelityVariationalGP(ApproximateGPyTorchModel):

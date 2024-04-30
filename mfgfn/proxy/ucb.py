@@ -1,15 +1,15 @@
-import torch
-from .botorch_models import ProxyBotorchUCB
-from botorch.acquisition.monte_carlo import (
-    qUpperConfidenceBound,
-)
-from botorch.sampling import SobolQMCNormalSampler
-from .dropout_regressor import DropoutRegressor
+import matplotlib.pyplot as plt
 import numpy as np
+import torch
+from botorch.acquisition.monte_carlo import qUpperConfidenceBound
+from botorch.sampling import SobolQMCNormalSampler
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+
 from mfgfn.regressor.dkl import DeepKernelRegressor
 from mfgfn.regressor.regressor import DropoutRegressor as SurrogateDropoutRegressor
-import matplotlib.pyplot as plt
-from mpl_toolkits.axes_grid1 import make_axes_locatable
+
+from .botorch_models import ProxyBotorchUCB
+from .dropout_regressor import DropoutRegressor
 
 
 class UCB(DropoutRegressor):

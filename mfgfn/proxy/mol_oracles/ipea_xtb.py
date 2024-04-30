@@ -1,6 +1,11 @@
-import re, os, shutil, traceback, math
-import numpy as np
+import math
+import os
+import re
+import shutil
 import subprocess
+import traceback
+
+import numpy as np
 
 from mfgfn.proxy.mol_oracles.mol_to_coord import MolToCoord
 

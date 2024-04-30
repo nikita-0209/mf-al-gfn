@@ -1,20 +1,21 @@
-import torch
+from abc import abstractmethod
+
 import gpytorch
-from tqdm import tqdm
 import hydra
-from botorch.models.gp_regression_fidelity import (
-    SingleTaskMultiFidelityGP,
-    SingleTaskGP,
-)
-from botorch.models.transforms.outcome import Standardize
-from botorch.fit import fit_gpytorch_mll
 import matplotlib.pyplot as plt
 import numpy as np
-from mpl_toolkits.axes_grid1 import make_axes_locatable
-from abc import abstractmethod
+import torch
+from botorch.fit import fit_gpytorch_mll
 from botorch.models.approximate_gp import SingleTaskVariationalGP
-from gpytorch.mlls import VariationalELBO
+from botorch.models.gp_regression_fidelity import (
+    SingleTaskGP,
+    SingleTaskMultiFidelityGP,
+)
+from botorch.models.transforms.outcome import Standardize
 from botorch.settings import debug
+from gpytorch.mlls import VariationalELBO
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+from tqdm import tqdm
 
 """
 Assumes that in single fidelity, fid =1

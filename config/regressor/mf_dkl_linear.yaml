@@ -4,7 +4,7 @@ checkpoint: proxy
 optim: adam
 
 surrogate:
-  _target_: model.gp_models.SingleTaskMultiFidelityLikeBotorchSVGP
+  _target_: mfgfn.model.gp_models.SingleTaskMultiFidelityLikeBotorchSVGP
   max_shift: 0
   mask_size: 0
   bootstrap_ratio: null

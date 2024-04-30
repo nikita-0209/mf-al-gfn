@@ -1,21 +1,24 @@
 """
 Runnable script with hydra capabilities
 """
-import sys
+
 import os
+import pickle
 import random
+import sys
 from typing import List
+
 import hydra
-from omegaconf import OmegaConf
-import torch
-from mfgfn.env.mfenv import MultiFidelityEnvWrapper
 import matplotlib.pyplot as plt
-from mfgfn.regressor.dkl import Tokenizer
 import numpy as np
+import torch
+from omegaconf import OmegaConf
+
+from mfgfn.env.mfenv import MultiFidelityEnvWrapper
+from mfgfn.proxy.mol_oracles.mol_oracle import MoleculeOracle
+from mfgfn.regressor.dkl import Tokenizer
 from mfgfn.utils.common import get_figure_plots
 from mfgfn.utils.eval_al_round import evaluate
-import pickle
-from mfgfn.proxy.mol_oracles.mol_oracle import MoleculeOracle
 
 
 @hydra.main(config_path="./config", config_name="default")
@@ -408,8 +411,8 @@ def main(config):
 
 
 def set_seeds(seed):
-    import torch
     import numpy as np
+    import torch
 
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False

@@ -1,16 +1,18 @@
+import copy
+import itertools
+import time
 from abc import abstractmethod
 from typing import List, Tuple
-import numpy.typing as npt
-from torchtyping import TensorType
-from gflownet.envs.base import GFlowNetEnv
-import numpy as np
-import torch
+
 import matplotlib.pyplot as plt
-import itertools
-import copy
-from mfgfn.env.grid import Grid
+import numpy as np
+import numpy.typing as npt
 import pandas as pd
-import time
+import torch
+from gflownet.envs.base import GFlowNetEnv
+from torchtyping import TensorType
+
+from mfgfn.env.grid import Grid
 from mfgfn.proxy.mol_oracles.mol_oracle import MoleculeOracle
 
 

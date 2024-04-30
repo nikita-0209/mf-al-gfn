@@ -1,12 +1,19 @@
-import glob, subprocess, re, shutil, warnings, traceback
+import glob
+import os
+import re
+import shutil
+import subprocess
+import time
+import traceback
+import warnings
 
-# TODO: fix shutil.Error: Destination path already exists
-
-import os, time
+import numpy as np
 from rdkit import Chem
 from rdkit.Chem import AllChem
 
-import numpy as np
+# TODO: fix shutil.Error: Destination path already exists
+
+
 
 
 def natural_sort(l):

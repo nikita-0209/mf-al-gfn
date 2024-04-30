@@ -1,7 +1,8 @@
-import torch.nn as nn
-from mfgfn.model.mlp import ACTIVATION_KEY
 import torch
+import torch.nn as nn
 import torch.nn.functional as F
+
+from mfgfn.model.mlp import ACTIVATION_KEY
 
 
 class MultiFidelityMLP(nn.Module):

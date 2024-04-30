@@ -1,12 +1,13 @@
+import os
+
+import hydra
+import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import numpy as np
-import os
-from torch.optim import Adam
-import hydra
-from tqdm import tqdm
 from gflownet.utils.common import set_device, set_float_precision
+from torch.optim import Adam
+from tqdm import tqdm
 
 
 class DropoutRegressor:

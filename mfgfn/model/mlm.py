@@ -1,8 +1,9 @@
 import math
+
 import numpy as np
 import torch
-from torch.nn import functional as F
 from torch import LongTensor
+from torch.nn import functional as F
 
 
 def sample_mask(

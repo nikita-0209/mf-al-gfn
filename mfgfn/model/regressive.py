@@ -1,8 +1,9 @@
-import torch.nn as nn
-from mfgfn.model.mlp import ACTIVATION_KEY
 import torch
+import torch.nn as nn
 import torch.nn.functional as F
 from torch.nn import MSELoss
+
+from mfgfn.model.mlp import ACTIVATION_KEY
 
 
 class RegressiveMLP(nn.Module):
@@ -219,7 +220,7 @@ class RegressiveMLP(nn.Module):
         metrics = {"loss": 0.0}
         self.eval()
         with torch.no_grad():
-            for (input_batch, target_batch) in loader:
+            for input_batch, target_batch in loader:
                 input_batch = input_batch.to("cuda")
                 target_batch = target_batch.to("cuda")
                 loss = criterion(self(input_batch), target_batch.unsqueeze(-1))
