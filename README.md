@@ -54,8 +54,6 @@ source ~/envs/mfgfn/bin/activate  # Activate your environment.
 python -m pip install .[all]  # Install the remaining dependencies of this package.
 ```
 
-Optionally, you may want to set up the AMP oracles (required only if you wish to run experiments with the anti-microbial peptide environment). Install the clamp-common-eval library from [MJ10/clamp-gen-data](https://github.com/MJ10/clamp-gen-data/tree/mfgfn-v1.0) by cloning the repo and then running the following where the repository is cloned: 
-
 Finally, consider renaming the log directory and data directory arguments (if necessary) in `config/user/anonymous.yaml` 
 
 ## Usage
