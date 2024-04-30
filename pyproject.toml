@@ -12,6 +12,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry.dependencies]
 # Base dependencies.
 botorch = ">=0.8.2"
+clamp_common_eval = { git = "https://github.com/MJ10/clamp-gen-data", branch = "mfgfn-v1.0" }
 gflownet = { git = "https://github.com/alexhernandezgarcia/gflownet", branch = "cont_mf" }
 hydra-core = ">=1.3.1"
 matplotlib = "*"
