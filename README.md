@@ -54,6 +54,8 @@ source ~/envs/mfgfn/bin/activate  # Activate your environment.
 python -m pip install .[all]  # Install the remaining dependencies of this package.
 ```
 
+The experiments with DNA aptamers rely on the Python package [NUPACK](https://www.nupack.org/) as the target oracle, which is under a [Non-Commercial Academic Use license](https://docs.nupack.org/#license). Therefore, this package needs to be downloaded and installed separately upon acceptance of the license agreement.
+
 Finally, consider renaming the log directory and data directory arguments (if necessary) in `config/user/anonymous.yaml` 
 
 ## Usage
