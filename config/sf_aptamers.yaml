@@ -3,7 +3,7 @@
 defaults:
   # - _self_
   - env: aptamers
-  - oracle@_oracle_dict.1: aptamers_nupack
+  - oracle@_oracle_dict.1: aptamers2
   - gflownet: trajectorybalance
   - user: anonymous
   - proxy: mes_svgp 

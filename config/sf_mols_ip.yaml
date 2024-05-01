@@ -3,7 +3,7 @@
 defaults:
   # - _self_
   - env: mols
-  - oracle@_oracle_dict.1: ip_fid3
+  - oracle@_oracle_dict.1: mols_ip3
   - gflownet: trajectorybalance
   - user: anonymous
   - proxy: mes_svgp 

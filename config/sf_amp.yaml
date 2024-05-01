@@ -3,8 +3,8 @@
 defaults:
   # - _self_
   - env: amp
-  - true_oracle: amp
-  - oracle@_oracle_dict.1: amp
+#   - true_oracle: amp
+  - oracle@_oracle_dict.1: amp3
   - gflownet: trajectorybalance
   - user: anonymous
   - proxy: mes_svgp 
