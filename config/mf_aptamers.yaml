@@ -49,21 +49,8 @@ env:
   reward_norm: 0.00001
   norm_factor: 2
   buffer:
-    train:
-      path: data_train.csv
-      n: null
-      type: all
-      seed: null
-      output_pkl: buffer_data_train.csv 
-      output_csv: null
-    test:
-      path: ${user.data_path}/dna/length30/test_2000_FINAL_mf.csv
-      type: all
-      output_pkl: buffer_data_test.csv
-      n: null
-      seed: null
-      output_csv: null
-    
+    train: null
+    test: null
 
 gflownet:
   active_learning: True

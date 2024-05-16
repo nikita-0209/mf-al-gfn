@@ -94,8 +94,11 @@ class AL_Logger(Logger):
         if use_context:
             key = self.context + "/" + key
         if fig is not None:
-            figimg = self.wandb.Image(fig)
-            self.wandb.log({key: figimg})
+            try:
+                figimg = self.wandb.Image(fig)
+                self.wandb.log({key: figimg})
+            except:
+                pass
             plt.close()
 
     def define_metric(self, metric, step_metric=None):

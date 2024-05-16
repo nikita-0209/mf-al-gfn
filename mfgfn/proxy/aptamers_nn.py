@@ -157,23 +157,23 @@ class AptamersNN(Proxy):
         FACTOR = 4
         VARIABLE_LEN = False
         NUM_TRANSFORMER_LAYER = 8
-        self.model = Transformer(
-            num_hid=NUM_HIDDEN_TRANSFORMER,
-            max_len=self.max_seq_length,
-            vocab_size=NUM_TOKEN,
-            num_outputs=NUM_OUTPUT,
-            dropout=DROPOUT,
-            num_layers=NUM_TRANSFORMER_LAYER,
-            num_head=NUM_HEAD,
-            pre_ln=PRE_LN,
-            factor=FACTOR,
-            varLen=VARIABLE_LEN,
-            device=self.device,
-        )
-        oraclePath = "/home/mila/n/nikita.saxena/activelearning/storage/dna/length30/oracleSearch_electricSweep/0.0_iter197.pt"
-        self.model.load_state_dict(torch.load(oraclePath))
-        self.model.eval()
-        self.model.to(self.device)
+#         self.model = Transformer(
+#             num_hid=NUM_HIDDEN_TRANSFORMER,
+#             max_len=self.max_seq_length,
+#             vocab_size=NUM_TOKEN,
+#             num_outputs=NUM_OUTPUT,
+#             dropout=DROPOUT,
+#             num_layers=NUM_TRANSFORMER_LAYER,
+#             num_head=NUM_HEAD,
+#             pre_ln=PRE_LN,
+#             factor=FACTOR,
+#             varLen=VARIABLE_LEN,
+#             device=self.device,
+#         )
+#         oraclePath = "/home/mila/n/nikita.saxena/activelearning/storage/dna/length30/oracleSearch_electricSweep/0.0_iter197.pt"
+#         self.model.load_state_dict(torch.load(oraclePath))
+#         self.model.eval()
+#         self.model.to(self.device)
 
     def __call__(self, sequences):
         """
@@ -183,6 +183,7 @@ class AptamersNN(Proxy):
             torch.Tensor of shape (batch_size, output_dim)
         Transformation (one-hot etc) done within model
         """
+        return torch.zeros(len(sequences), device=self.device, dtype=self.float)
         encoded_readable = [
             torch.tensor([self.lookup[el] for el in seq]) for seq in sequences
         ]

@@ -33,6 +33,9 @@ class MultiFidelityHartmann(Hartmann):
     def __call__(self, states: TensorType["batch", "state_dim"]) -> TensorType["batch"]:
         fid_dict = {0: 0.5, 1: 0.75, 2: 1.0}
         fid = self.fid
+        # If the fidelity is not the highest fidelity, return 0 for all states.
+        if fid != 2:
+            return torch.zeros(len(states), device=self.device, dtype=self.float)
         fid = fid_dict[fid]
         fidelity = (
             torch.ones((len(states), 1), device=self.device, dtype=self.float) * fid
