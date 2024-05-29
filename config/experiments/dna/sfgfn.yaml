@@ -2,17 +2,15 @@
 
 defaults:
   # - _self_
-  - env: mols
-  - oracle@_oracle_dict.1: mols_ip1
-  - oracle@_oracle_dict.2: mols_ip1
-  - oracle@_oracle_dict.3: mols_ip1
-  - gflownet: trajectorybalance
-  - user: anonymous
-  - proxy: mf_mes_dkl 
-  - dataset: dataset
-  - regressor: mf_dkl_linear
-  - model: mlm_transformer 
-  - logger: wandb
+  - /env: aptamers
+  - /oracle@_oracle_dict.1: aptamers2
+  - /gflownet: trajectorybalance
+  - /user: anonymous
+  - /proxy: mes_svgp
+  - /dataset: dataset
+  - /regressor: sf_dkl
+  - /model: mlm_transformer 
+  - /logger: wandb
 
 regressor:
   surrogate: 
@@ -20,11 +18,8 @@ regressor:
     patience: 15
     eval_period: 1
 
-
-
-# REMEMBER TO UPDATE TRANSFORMER CONFIG TO 64
 logger:
-  project_name: "MF-AL-GFN"
+  project_name: "MF-AL-GFN" 
   lightweight: False
   plot:
     period: -1
@@ -37,19 +32,19 @@ logger:
     period: -1
   do:
     times: False
-    online: True #True
+    online: False
   tags:
-    - mf
-    - mols_ip
+    - sf
+    - aptamers
 
 env:
   denorm_proxy: False #True for ucb, False for mes
-  corr_type: None #from_trajectory
+  corr_type: None 
   proxy_state_format: state
   reward_func: power 
   reward_beta: 1 #0.2 for ucb and 2e1 for mes
-  norm_factor: 2
-  reward_norm: 1e-4
+  norm_factor: 1.5
+  reward_norm: 0.00001
   buffer:
     train:
       path: data_train.csv
@@ -59,7 +54,7 @@ env:
       output_pkl: buffer_data_train.csv 
       output_csv: null
     test:
-      path: data_test.csv 
+      path: ${user.data_path}/dna/length30/test_2000_FINAL.csv 
       type: all
       output_pkl: buffer_data_test.csv
       n: null
@@ -69,7 +64,7 @@ env:
 
 gflownet:
   active_learning: True
-  random_action_prob: 0.0 
+  random_action_prob: 0.0 #0.001
   optimizer:
     lr: 5e-4
     lr_z_mult: 20
@@ -81,7 +76,10 @@ gflownet:
       n_hid: 2048
       n_layers: 2
       checkpoint: fp
-  pct_offline: 0.0 
+    backward:
+      type: mlp
+      shared_weights: True
+  pct_offline: 0.0 #0.3
   oracle:
     n: 500
 
@@ -95,17 +93,17 @@ dataset:
     test:
       batch_size: 32
   path:
-    type: mf
+    type: sf
     oracle_dataset:
       train: 
-        path:  ${user.data_path}/mols/ip/mf/data_train.csv
-        get_scores: False
+        path:  ${user.data_path}/dna/sf/data_train.csv
+        get_scores: True
       test: 
-        path: ${user.data_path}/mols/ip/mf/data_test.csv
-        get_scores: False
+        path: ${user.data_path}/dna/sf/data_test.csv
+        get_scores: True
 # Number of objects to sample at the end of training
 # Sample 5*K and choose topK
-n_samples: 128
+n_samples: 512
 # Random seeds
 seed: 0
 # Device
@@ -113,15 +111,13 @@ device: cuda
 # Float precision
 float_precision: 32
 #It is strongly recommended to use double precision in BoTorch, as this improves both precision and stability and can help avoid numerical errors. See https://github.com/pytorch/botorch/discussions/1444
-al_n_rounds: 30
+al_n_rounds: 10
 do_figure: False
 
 multifidelity:
   proxy: True
   fixed_cost: 0.0
   rescale: 1
-  fid_embed: one_hot
-  fid_embed_dim: None
 
 # Hydra config
 hydra:

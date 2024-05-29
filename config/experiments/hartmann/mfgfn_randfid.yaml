@@ -2,73 +2,65 @@
 
 defaults:
   # - _self_
-  - env: amp
-#   - true_oracle: amp
-  # last must be the best for project function to work as expected
-  - oracle@_oracle_dict.1: amp1
-  - oracle@_oracle_dict.2: amp2
-  - oracle@_oracle_dict.3: amp3
-  - gflownet: trajectorybalance
-  - user: anonymous
-  - proxy: mf_mes_dkl
-  - dataset: dataset
-  - regressor: mf_dkl_linear
-  - model: mlm_transformer
-  - logger: wandb
+  - /env: grid
+  - /oracle@_oracle_dict.1: hartmann1
+  - /oracle@_oracle_dict.2: hartmann2
+  - /oracle@_oracle_dict.3: hartmann3
+  - /gflownet: random
+  - /user: anonymous
+  - /proxy: mf_mes_gp
+  - /dataset: dataset
+  - /regressor: mf_gp
+  - /logger: wandb
 
-regressor:
-  surrogate: 
-    num_epochs: 512
-    patience: 15
-    eval_period: 1
-  
 
 logger:
   project_name: "MF-AL-GFN"
   lightweight: False
   plot:
     period: -1
-    first_it: True
+    first_it: False
   test:
-    period: 1000
+    period: -1
     n: 1
   oracle:
     period: -1
   do:
     times: False
-    online: False
+    online: True
   tags:
     - mf
-    - amp
+    - hartmann
 
 env:
-  corr_type: from_trajectory
-  proxy_state_format: state
+  corr_type: None
+  n_dim: 6
+  proxy_state_format: state 
   reward_func: power
-  reward_beta: 1 #200
-  reward_norm: 1e-5
-  norm_factor: 1
+  reward_beta: 1 
+  length: 10
+  rescale: ${env.length}
+  reward_norm: 0.01 
   buffer:
     train:
-      path: data_train.csv
+      path: null
       n: null
-      type: all
+      type: null
       seed: null
       output_csv: null 
-      output_pkl: buffer_data_train.csv
     test:
-      path: data_test.csv
-      type: all
-      output_pkl: buffer_data_test.csv
-      n: null
+      path: null 
+      type: null 
+      output_pkl: null 
+      n: null 
       seed: null
-      output_csv: null
+      output_csv: null 
     
 
 gflownet:
   active_learning: True
   sample_only: True
-  random_action_prob: 0.15
+  random_action_prob: 0.001
   optimizer:
     lr: 5e-4
     lr_z_mult: 20
@@ -83,31 +75,31 @@ gflownet:
     backward:
       type: mlp
       shared_weights: True
-  pct_offline: 0.3
+  pct_offline: 0.0
   oracle:
     n: 500
 
 dataset:
-  split: given #random
-  train_fraction: 0.8
+  normalize_data: True
+  n_samples: 300
+  split: all_train
+  train_fraction: 0.9
   dataloader:
     train:
-      batch_size: 32
+      batch_size: 64
     test:
-      batch_size: 32
+      batch_size: 64
   path:
     type: mf
-    oracle_dataset:
-      train: 
-        path: ${user.data_path}/amp/mf/data_train.csv
-        get_scores: False
-      test: 
-        path: ${user.data_path}/amp/mf/data_test.csv
-        get_scores: False
-
+    oracle_dataset: 
+      train:
+        path: ${user.data_path}/hartmann/${dataset.path.type}/data_train.csv
+        get_scores: True
+      test: null
+    
 # Number of objects to sample at the end of training
 # Sample 5*K and choose topK
-n_samples: 32
+n_samples: 10
 # Random seeds
 seed: 0
 # Device
@@ -115,16 +107,13 @@ device: cuda
 # Float precision
 float_precision: 64
 #It is strongly recommended to use double precision in BoTorch, as this improves both precision and stability and can help avoid numerical errors. See https://github.com/pytorch/botorch/discussions/1444
-# al_n_rounds: 30
+al_n_rounds: 10
 do_figure: False
-budget: 89600
 
 multifidelity:
   proxy: True
   fid_embed: one_hot
   fid_embed_dim: None
-  fixed_cost: 0
-  rescale: 1
 
 # Hydra config
 hydra:

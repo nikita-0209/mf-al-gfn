@@ -2,15 +2,15 @@
 
 defaults:
   # - _self_
-  - env: aptamers
-  - oracle@_oracle_dict.1: aptamers2
-  - gflownet: trajectorybalance
-  - user: anonymous
-  - proxy: mes_svgp 
-  - dataset: dataset
-  - regressor: sf_dkl 
-  - model: mlm_transformer 
-  - logger: wandb
+  - /env: mols
+  - /oracle@_oracle_dict.1: mols_ea3
+  - /gflownet: trajectorybalance
+  - /user: anonymous
+  - /proxy: mes_svgp
+  - /dataset: dataset
+  - /regressor: sf_dkl
+  - /model: mlm_transformer
+  - /logger: wandb
 
 regressor:
   surrogate: 
@@ -18,8 +18,9 @@ regressor:
     patience: 15
     eval_period: 1
 
+# REMEMBER TO UPDATE TRANSFORMER CONFIG TO 32
 logger:
-  project_name: "MF-AL-GFN" 
+  project_name: "MF-AL-GFN" #"Aptamers-DKL"
   lightweight: False
   plot:
     period: -1
@@ -32,19 +33,18 @@ logger:
     period: -1
   do:
     times: False
-    online: False
+    online: True
   tags:
     - sf
-    - aptamers
 
 env:
   denorm_proxy: False #True for ucb, False for mes
   corr_type: None 
   proxy_state_format: state
   reward_func: power 
-  reward_beta: 1 #0.2 for ucb and 2e1 for mes
+  reward_beta: 1
   norm_factor: 1.5
-  reward_norm: 0.00001
+  reward_norm: 0.001
   buffer:
     train:
       path: data_train.csv
@@ -54,7 +54,7 @@ env:
       output_pkl: buffer_data_train.csv 
       output_csv: null
     test:
-      path: ${user.data_path}/dna/length30/test_2000_FINAL.csv 
+      path: data_test.csv
       type: all
       output_pkl: buffer_data_test.csv
       n: null
@@ -85,7 +85,7 @@ gflownet:
 
 dataset:
   normalize_data: True
-  split: given 
+  split: given #random
   train_fraction: 0.8
   dataloader:
     train:
@@ -96,14 +96,14 @@ dataset:
     type: sf
     oracle_dataset:
       train: 
-        path:  ${user.data_path}/dna/sf/data_train.csv
-        get_scores: True
+        path: ${user.data_path}/mols/ea/sf/data_train.csv
+        get_scores: False
       test: 
-        path: ${user.data_path}/dna/sf/data_test.csv
-        get_scores: True
+        path: ${user.data_path}/mols/ea/sf/data_test.csv
+        get_scores: False
 # Number of objects to sample at the end of training
 # Sample 5*K and choose topK
-n_samples: 512
+n_samples: 128
 # Random seeds
 seed: 0
 # Device

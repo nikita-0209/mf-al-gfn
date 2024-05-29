@@ -2,14 +2,16 @@
 
 defaults:
   # - _self_
-  - env: grid
-  - oracle@_oracle_dict.1: branin
-  - gflownet: ppo
-  - user: anonymous
-  - proxy: mes_gp 
-  - dataset: dataset
-  - regressor: sf_gp 
-  - logger: wandb
+  - /env: grid
+  - /oracle@_oracle_dict.1: branin1
+  - /oracle@_oracle_dict.2: branin2
+  - /oracle@_oracle_dict.3: branin3
+  - /gflownet: ppo
+  - /user: anonymous
+  - /proxy: mf_mes_gp
+  - /dataset: dataset
+  - /regressor: mf_gp
+  - /logger: wandb
 
 logger:
   project_name: "MF-AL-GFN"
@@ -28,17 +30,17 @@ logger:
     online: False
   tags:
     - branin
-    - sf
+    - mf
 
 env:
   min_reward: 1e-15
   corr_type: None
-  proxy_state_format: state
+  proxy_state_format: state 
   reward_func: power 
-  reward_beta: 1 
+  reward_beta: 1
   length: 100
   rescale: 10
-  reward_norm: 1 
+  reward_norm: 1
   buffer:
     train:
       path: null
@@ -47,7 +49,7 @@ env:
       seed: null
       output_csv: null 
     test:
-      path: null 
+      path: null
       type: all
       output_pkl: buffer_data_test.csv
       n: null
@@ -81,20 +83,21 @@ dataset:
   normalize_data: True
   n_samples: 300
   train_fraction: 0.8
-  split: all_train
+  split: all_train 
   dataloader:
     train:
       batch_size: 256
     test:
       batch_size: 256
   path:
-    type: sf 
+    type: mf 
     oracle_dataset: 
       fid_type: random
       train: 
-        path: ${user.data_path}/branin/sf/data_train.csv
+        path: ${user.data_path}/branin/mf/data_train.csv
         get_scores: True
       test: null
+
 # Number of objects to sample at the end of training
 # Sample 5*K and choose topK
 n_samples: 30

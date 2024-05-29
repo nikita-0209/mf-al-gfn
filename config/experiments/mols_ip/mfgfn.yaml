@@ -1,26 +1,28 @@
-  # @package _global_
+# @package _global_
 
 defaults:
   # - _self_
-  - env: aptamers
-  - oracle@_oracle_dict.1: aptamers1
-  # Second is better
-  - oracle@_oracle_dict.2: aptamers2
-  - gflownet: trajectorybalance
-  - user: anonymous
-  - proxy: mf_mes_dkl 
-  - dataset: dataset
-  - regressor: mf_dkl_linear 
-  - model: mlm_transformer 
-  - logger: wandb
+  - /env: mols
+  - /oracle@_oracle_dict.1: mols_ip1
+  - /oracle@_oracle_dict.2: mols_ip1
+  - /oracle@_oracle_dict.3: mols_ip1
+  - /gflownet: trajectorybalance
+  - /user: anonymous
+  - /proxy: mf_mes_dkl
+  - /dataset: dataset
+  - /regressor: mf_dkl_linear
+  - /model: mlm_transformer
+  - /logger: wandb
 
 regressor:
   surrogate: 
     num_epochs: 512
     patience: 15
     eval_period: 1
-    num_inducing_points: 64
 
+
+
+# REMEMBER TO UPDATE TRANSFORMER CONFIG TO 64
 logger:
   project_name: "MF-AL-GFN"
   lightweight: False
@@ -29,25 +31,25 @@ logger:
     first_it: True
   test:
     period: 1000
-    n: 1000
+    n: 1
     first_it: True
   oracle:
     period: -1
   do:
     times: False
-    online: True
+    online: True #True
   tags:
-    - aptamers
     - mf
+    - mols_ip
 
 env:
-  corr_type: from_trajectory
+  denorm_proxy: False #True for ucb, False for mes
+  corr_type: None #from_trajectory
   proxy_state_format: state
-  reward_func: power
-  reward_beta: 1
-  beta_factor: 0
-  reward_norm: 0.00001
+  reward_func: power 
+  reward_beta: 1 #0.2 for ucb and 2e1 for mes
   norm_factor: 2
+  reward_norm: 1e-4
   buffer:
     train:
       path: data_train.csv
@@ -57,7 +59,7 @@ env:
       output_pkl: buffer_data_train.csv 
       output_csv: null
     test:
-      path: ${user.data_path}/dna/length30/test_2000_FINAL_mf.csv
+      path: data_test.csv 
       type: all
       output_pkl: buffer_data_test.csv
       n: null
@@ -67,7 +69,7 @@ env:
 
 gflownet:
   active_learning: True
-  random_action_prob: 0.0 #0.001
+  random_action_prob: 0.0 
   optimizer:
     lr: 5e-4
     lr_z_mult: 20
@@ -79,16 +81,13 @@ gflownet:
       n_hid: 2048
       n_layers: 2
       checkpoint: fp
-    backward:
-      type: mlp
-      shared_weights: True
-  pct_offline: 0.0
+  pct_offline: 0.0 
   oracle:
     n: 500
 
 dataset:
   normalize_data: True
-  split: given #random
+  split: given 
   train_fraction: 0.8
   dataloader:
     train:
@@ -98,21 +97,15 @@ dataset:
   path:
     type: mf
     oracle_dataset:
-      fid_type: random
-      type: null
       train: 
-        path: ${user.data_path}/dna/mf/data_train.csv
-        # path: /home/mila/n/nikita.saxena/scratch/logs/activelearning/2023-05-01_22-12-21/data/data_train.csv
+        path:  ${user.data_path}/mols/ip/mf/data_train.csv
         get_scores: False
       test: 
-        # path: ${user.data_path}/dna/length30/mf/data_test.csv
-        path: ${user.data_path}/dna/mf/data_test.csv
-        # path: /home/mila/n/nikita.saxena/scratch/logs/activelearning/2023-05-01_22-12-21/data/data_test.csv
+        path: ${user.data_path}/mols/ip/mf/data_test.csv
         get_scores: False
-
 # Number of objects to sample at the end of training
 # Sample 5*K and choose topK
-n_samples: 512 #512
+n_samples: 128
 # Random seeds
 seed: 0
 # Device
@@ -120,12 +113,12 @@ device: cuda
 # Float precision
 float_precision: 32
 #It is strongly recommended to use double precision in BoTorch, as this improves both precision and stability and can help avoid numerical errors. See https://github.com/pytorch/botorch/discussions/1444
-al_n_rounds: 10
+al_n_rounds: 30
 do_figure: False
 
 multifidelity:
   proxy: True
-  fixed_cost: 0
+  fixed_cost: 0.0
   rescale: 1
   fid_embed: one_hot
   fid_embed_dim: None

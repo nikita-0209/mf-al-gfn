@@ -1,14 +1,14 @@
 # @package _global_
 
 defaults:
-  - env: grid
-  - oracle@_oracle_dict.1: hartmann
-  - gflownet: trajectorybalance
-  - user: anonymous
-  - proxy: mes_gp 
-  - dataset: dataset
-  - regressor: sf_gp 
-  - logger: wandb
+  - /env: grid
+  - /oracle@_oracle_dict.1: hartmann
+  - /gflownet: trajectorybalance
+  - /user: anonymous
+  - /proxy: mes_gp
+  - /dataset: dataset
+  - /regressor: sf_gp
+  - /logger: wandb
 
 logger:
   project_name: "MF-GFN-AL"

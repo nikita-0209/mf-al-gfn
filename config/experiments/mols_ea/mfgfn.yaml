@@ -2,15 +2,17 @@
 
 defaults:
   # - _self_
-  - env: mols
-  - oracle@_oracle_dict.1: mols_ea3
-  - gflownet: trajectorybalance
-  - user: anonymous
-  - proxy: mes_svgp 
-  - dataset: dataset
-  - regressor: sf_dkl
-  - model: mlm_transformer  
-  - logger: wandb
+  - /env: mols
+  - /oracle@_oracle_dict.1: mols_ea1
+  - /oracle@_oracle_dict.2: mols_ea2
+  - /oracle@_oracle_dict.3: mols_ea3
+  - /gflownet: trajectorybalance
+  - /user: anonymous
+  - /proxy: mf_mes_dkl
+  - /dataset: dataset
+  - /regressor: mf_dkl_linear
+  - /model: mlm_transformer
+  - /logger: wandb
 
 regressor:
   surrogate: 
@@ -18,7 +20,8 @@ regressor:
     patience: 15
     eval_period: 1
 
-# REMEMBER TO UPDATE TRANSFORMER CONFIG TO 32
+
+# REMEMBER TO UPDATE TRANSFORMER CONFIG TO 64
 logger:
   project_name: "MF-AL-GFN" #"Aptamers-DKL"
   lightweight: False
@@ -35,16 +38,17 @@ logger:
     times: False
     online: True
   tags:
-    - sf
+    - mf
+    - mols_ea
 
 env:
   denorm_proxy: False #True for ucb, False for mes
-  corr_type: None 
+  corr_type: None
   proxy_state_format: state
   reward_func: power 
-  reward_beta: 1
+  reward_beta: 1 #0.2 for ucb and 2e1 for mes
   norm_factor: 1.5
-  reward_norm: 0.001
+  reward_norm: 1e-3
   buffer:
     train:
       path: data_train.csv
@@ -54,7 +58,7 @@ env:
       output_pkl: buffer_data_train.csv 
       output_csv: null
     test:
-      path: data_test.csv
+      path: data_test.csv 
       type: all
       output_pkl: buffer_data_test.csv
       n: null
@@ -64,11 +68,11 @@ env:
 
 gflownet:
   active_learning: True
-  random_action_prob: 0.0 #0.001
+  random_action_prob: 0.0
   optimizer:
     lr: 5e-4
     lr_z_mult: 20
-    n_train_steps: 10000
+    n_train_steps:  10000
     batch_size: 32
   policy:
     forward:
@@ -76,16 +80,13 @@ gflownet:
       n_hid: 2048
       n_layers: 2
       checkpoint: fp
-    backward:
-      type: mlp
-      shared_weights: True
   pct_offline: 0.0 #0.3
   oracle:
     n: 500
 
 dataset:
   normalize_data: True
-  split: given #random
+  split: given 
   train_fraction: 0.8
   dataloader:
     train:
@@ -93,14 +94,15 @@ dataset:
     test:
       batch_size: 32
   path:
-    type: sf
+    type: mf
     oracle_dataset:
       train: 
-        path: ${user.data_path}/mols/ea/sf/data_train.csv
+        path: ${user.data_path}/mols/ea/mf/data_train.csv
         get_scores: False
       test: 
-        path: ${user.data_path}/mols/ea/sf/data_test.csv
+        path: ${user.data_path}/mols/ea/mf/data_test.csv
         get_scores: False
+
 # Number of objects to sample at the end of training
 # Sample 5*K and choose topK
 n_samples: 128
@@ -118,6 +120,8 @@ multifidelity:
   proxy: True
   fixed_cost: 0.0
   rescale: 1
+  fid_embed: one_hot
+  fid_embed_dim: None
 
 # Hydra config
 hydra:

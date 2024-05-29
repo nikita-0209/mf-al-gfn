@@ -2,45 +2,43 @@
 
 defaults:
   # - _self_
-  - env: grid
-  - oracle@_oracle_dict.1: hartmann1
-  - oracle@_oracle_dict.2: hartmann2
-  - oracle@_oracle_dict.3: hartmann3
-  - gflownet: trajectorybalance
-  - user: anonymous
-  - proxy: mf_mes_gp 
-  - dataset: dataset
-  - regressor: mf_gp 
-  - logger: wandb
-
+  - /env: grid
+  - /oracle@_oracle_dict.1: branin
+  - /gflownet: ppo
+  - /user: anonymous
+  - /proxy: mes_gp
+  - /dataset: dataset
+  - /regressor: sf_gp
+  - /logger: wandb
 
 logger:
   project_name: "MF-AL-GFN"
   lightweight: False
   plot:
-    period: -1
-    first_it: False
+    period: 3000
+    first_it: True
   test:
-    period: -1
-    n: 1
+    period: -1 
+    n: 1 
+    first_it: True
   oracle:
     period: -1
   do:
     times: False
-    online: True
+    online: False
   tags:
-    - mf
-    - hartmann
+    - branin
+    - sf
 
 env:
+  min_reward: 1e-15
   corr_type: None
-  n_dim: 6
-  proxy_state_format: state 
-  reward_func: power
+  proxy_state_format: state
+  reward_func: power 
   reward_beta: 1 
-  length: 10
-  rescale: ${env.length}
-  reward_norm: 0.01 
+  length: 100
+  rescale: 10
+  reward_norm: 1 
   buffer:
     train:
       path: null
@@ -50,9 +48,9 @@ env:
       output_csv: null 
     test:
       path: null 
-      type: null 
-      output_pkl: null 
-      n: null 
+      type: all
+      output_pkl: buffer_data_test.csv
+      n: null
       seed: null
       output_csv: null 
     
@@ -60,12 +58,12 @@ env:
 gflownet:
   active_learning: True
   sample_only: True
-  random_action_prob: 0.001
+  random_action_prob: 0.0
   optimizer:
     lr: 5e-4
     lr_z_mult: 20
     n_train_steps: 10000
-    batch_size: 32
+    batch_size: 16
   policy:
     forward:
       type: mlp
@@ -82,24 +80,24 @@ gflownet:
 dataset:
   normalize_data: True
   n_samples: 300
+  train_fraction: 0.8
   split: all_train
-  train_fraction: 0.9
   dataloader:
     train:
-      batch_size: 64
+      batch_size: 256
     test:
-      batch_size: 64
+      batch_size: 256
   path:
-    type: mf
+    type: sf 
     oracle_dataset: 
-      train:
-        path: ${user.data_path}/hartmann/${dataset.path.type}/data_train.csv
+      fid_type: random
+      train: 
+        path: ${user.data_path}/branin/sf/data_train.csv
         get_scores: True
       test: null
-    
 # Number of objects to sample at the end of training
 # Sample 5*K and choose topK
-n_samples: 10
+n_samples: 30
 # Random seeds
 seed: 0
 # Device
@@ -107,13 +105,15 @@ device: cuda
 # Float precision
 float_precision: 64
 #It is strongly recommended to use double precision in BoTorch, as this improves both precision and stability and can help avoid numerical errors. See https://github.com/pytorch/botorch/discussions/1444
-al_n_rounds: 10
-do_figure: False
-
+al_n_rounds: 10 #1
+do_figure: True
 multifidelity:
-  proxy: True
   fid_embed: one_hot
   fid_embed_dim: None
+  proxy: True
+  rescale: 10
+  candidate_set_path: null
+budget: 450
 
 # Hydra config
 hydra:

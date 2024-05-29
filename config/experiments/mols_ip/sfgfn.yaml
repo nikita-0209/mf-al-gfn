@@ -2,15 +2,15 @@
 
 defaults:
   # - _self_
-  - env: mols
-  - oracle@_oracle_dict.1: mols_ip3
-  - gflownet: trajectorybalance
-  - user: anonymous
-  - proxy: mes_svgp 
-  - dataset: dataset
-  - regressor: sf_dkl 
-  - model: mlm_transformer  
-  - logger: wandb
+  - /env: mols
+  - /oracle@_oracle_dict.1: mols_ip3
+  - /gflownet: trajectorybalance
+  - /user: anonymous
+  - /proxy: mes_svgp
+  - /dataset: dataset
+  - /regressor: sf_dkl
+  - /model: mlm_transformer
+  - /logger: wandb
 
 regressor:
   surrogate: 
