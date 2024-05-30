@@ -1,4 +1,4 @@
 defaults:
   - base
-_target_: proxy.dropout_regressor.DropoutRegressor
+_target_: mfgfn.proxy.dropout_regressor.DropoutRegressor
 num_dropout_samples: 25

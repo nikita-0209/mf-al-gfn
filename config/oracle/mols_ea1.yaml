@@ -1,0 +1,18 @@
+_target_: mfgfn.proxy.mol_oracles.mol_oracle.MoleculeOracle
+task: ea
+oracle_config: 
+  # log_dir: ${hydra.run.dir}
+  moltocoord_config:
+    conformer_config: 
+      num_conf: 2
+      maxattempts: 100
+      randomcoords: True
+      prunermsthres: 1.5
+  conformer_ladder: 1 # on each oracle ladder, use ladder^x more conformers (0 -> no changes)
+  remove_scratch: True
+  ff: mmff
+  semiempirical: xtb
+  mol_repr: selfies # or smiles
+cost: 1
+maximize: True
+oracle_level: 1

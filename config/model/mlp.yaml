@@ -1,4 +1,4 @@
-_target_: model.mlp.MLP
+_target_: mfgfn.model.mlp.MLP
 
 activation: "relu"
 num_output: 1

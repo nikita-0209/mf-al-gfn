@@ -1,5 +1,0 @@
-noise:
-  mu: 0
-  sigma: 0.01
-valid: null
-cost: 1.5

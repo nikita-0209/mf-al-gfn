@@ -1,7 +1,7 @@
 defaults:
   - base
 
-_target_: env.aptamers.Aptamers
+_target_: mfgfn.env.aptamers.Aptamers
 
 id: aptamers
 # func: nupack energy

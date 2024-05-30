@@ -1,0 +1,124 @@
+# @package _global_
+
+defaults:
+  - env: grid
+  - oracle@_oracle_dict.1: hartmann
+  - gflownet: trajectorybalance
+  - user: anonymous
+  - proxy: mes_gp 
+  - dataset: dataset
+  - regressor: sf_gp 
+  - logger: wandb
+
+logger:
+  project_name: "MF-GFN-AL"
+  lightweight: False
+  plot:
+    period: -1
+    first_it: False
+  test:
+    period: -1
+    n: 1
+  oracle:
+    period: -1
+  do:
+    times: False
+    online: True
+  tags:
+    - sf
+    - hartmann
+
+env:
+  corr_type: None
+  n_dim: 6
+  proxy_state_format: state
+  reward_func: power
+  reward_beta: 1 
+  length: 10
+  rescale: ${env.length}
+  reward_norm: 0.01 
+  buffer:
+    train:
+      path: null
+      n: null
+      type: null
+      seed: null
+      output_csv: null 
+    test:
+      path: null 
+      type: null 
+      output_pkl: null 
+      n: null 
+      seed: null
+      output_csv: null 
+    
+
+gflownet:
+  active_learning: True
+  sample_only: True
+  random_action_prob: 0.001
+  optimizer:
+    lr: 5e-4
+    lr_z_mult: 20
+    n_train_steps: 10000
+    batch_size: 32
+  policy:
+    forward:
+      type: mlp
+      n_hid: 2048
+      n_layers: 2
+      checkpoint: fp
+    backward:
+      type: mlp
+      shared_weights: True
+  pct_offline: 0.0
+  oracle:
+    n: 500
+
+dataset:
+  normalize_data: True
+  n_samples: 300
+  split: all_train
+  train_fraction: 0.9
+  dataloader:
+    train:
+      batch_size: 64
+    test:
+      batch_size: 64
+  path:
+    type: sf
+    oracle_dataset: 
+      train:
+        path: ${user.data_path}/hartmann/${dataset.path.type}/data_train.csv
+        get_scores: True
+      test: null
+
+# Number of objects to sample at the end of training
+# Sample 5*K and choose topK
+n_samples: 10
+# Random seeds
+seed: 0
+# Device
+device: cuda
+# Float precision
+float_precision: 64
+#It is strongly recommended to use double precision in BoTorch, as this improves both precision and stability and can help avoid numerical errors. See https://github.com/pytorch/botorch/discussions/1444
+al_n_rounds: 30
+do_figure: False
+# budget: 1500000
+# for the sanity check, 5*1e4 + 5
+
+multifidelity:
+  proxy: True
+  fid_embed: one_hot
+  fid_embed_dim: None
+
+# Hydra config
+hydra:
+  # See: https://hydra.cc/docs/configure_hydra/workdir/
+  run:
+    dir: ${user.logdir.root}/${now:%Y-%m-%d_%H-%M-%S}
+  job:
+    # See: https://hydra.cc/docs/upgrades/1.1_to_1.2/changes_to_job_working_dir/
+    # See: https://hydra.cc/docs/tutorials/basic/running_your_app/working_directory/#disable-changing-current-working-dir-to-jobs-output-dir
+    chdir: True

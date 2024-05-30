@@ -1,5 +1,5 @@
 defaults:
   - base
-_target_: proxy.mes.VariationalGPMultiFidelityMES
+_target_: mfgfn.proxy.mes.VariationalGPMultiFidelityMES
 cost_type: user
 maximize: True

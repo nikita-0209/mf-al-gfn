@@ -1,4 +1,4 @@
-_target_: regressor.regressor.DropoutRegressor
+_target_: mfgfn.regressor.regressor.DropoutRegressor
 
 # Path
 checkpoint: proxy

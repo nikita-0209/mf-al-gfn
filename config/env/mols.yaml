@@ -2,12 +2,12 @@ defaults:
   - base
 
 # _target_: gflownet.envs.amp.AMP
-_target_: env.mols.MolSelfies
+_target_: mfgfn.env.mols.MolSelfies
 
 id: mols
 # Minimum and maximum length for the sequences
 min_seq_length: 1
-max_seq_length: 128
+max_seq_length: 64
 # Number of letters in alphabet
 selfies_vocab: small
 n_alphabet: 26 # for small, 68 for large
@@ -16,7 +16,7 @@ min_word_len: 1
 max_word_len: 1
 reward_func: power
 reward_norm_std_mult: -1.0 # might need modification
-reward_beta: 3.0 # might need modification
+reward_beta: 1.0 # might need modification
 # Buffer
 buffer:
   replay_capacity: 10

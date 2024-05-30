@@ -1,1 +1,1 @@
-_target_: sampler.random_grid.RandomSampler
+_target_: mfgfn.sampler.random_grid.RandomSampler

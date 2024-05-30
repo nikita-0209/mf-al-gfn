@@ -1,4 +1,4 @@
-_target_: proxy.branin.MultiFidelityBranin
+_target_: mfgfn.proxy.branin.MultiFidelityBranin
 fid: 1
-cost: 1e-1
+cost: 0.1
 maximize: False

@@ -1,0 +1,134 @@
+# @package _global_
+
+defaults:
+  # - _self_
+  - env: mols
+  - oracle@_oracle_dict.1: mols_ip1
+  - oracle@_oracle_dict.2: mols_ip1
+  - oracle@_oracle_dict.3: mols_ip1
+  - gflownet: trajectorybalance
+  - user: anonymous
+  - proxy: mf_mes_dkl 
+  - dataset: dataset
+  - regressor: mf_dkl_linear
+  - model: mlm_transformer 
+  - logger: wandb
+
+regressor:
+  surrogate: 
+    num_epochs: 512
+    patience: 15
+    eval_period: 1
+
+
+
+# REMEMBER TO UPDATE TRANSFORMER CONFIG TO 64
+logger:
+  project_name: "MF-AL-GFN"
+  lightweight: False
+  plot:
+    period: -1
+    first_it: True
+  test:
+    period: 1000
+    n: 1
+    first_it: True
+  oracle:
+    period: -1
+  do:
+    times: False
+    online: True #True
+  tags:
+    - mf
+    - mols_ip
+
+env:
+  denorm_proxy: False #True for ucb, False for mes
+  corr_type: None #from_trajectory
+  proxy_state_format: state
+  reward_func: power 
+  reward_beta: 1 #0.2 for ucb and 2e1 for mes
+  norm_factor: 2
+  reward_norm: 1e-4
+  buffer:
+    train:
+      path: data_train.csv
+      n: null
+      type: all
+      seed: null
+      output_pkl: buffer_data_train.csv 
+      output_csv: null
+    test:
+      path: data_test.csv 
+      type: all
+      output_pkl: buffer_data_test.csv
+      n: null
+      seed: null
+      output_csv: null
+    
+
+gflownet:
+  active_learning: True
+  random_action_prob: 0.0 
+  optimizer:
+    lr: 5e-4
+    lr_z_mult: 20
+    n_train_steps: 10000
+    batch_size: 32
+  policy:
+    forward:
+      type: mlp
+      n_hid: 2048
+      n_layers: 2
+      checkpoint: fp
+  pct_offline: 0.0 
+  oracle:
+    n: 500
+
+dataset:
+  normalize_data: True
+  split: given 
+  train_fraction: 0.8
+  dataloader:
+    train:
+      batch_size: 32
+    test:
+      batch_size: 32
+  path:
+    type: mf
+    oracle_dataset:
+      train: 
+        path:  ${user.data_path}/mols/ip/mf/data_train.csv
+        get_scores: False
+      test: 
+        path: ${user.data_path}/mols/ip/mf/data_test.csv
+        get_scores: False
+# Number of objects to sample at the end of training
+# Sample 5*K and choose topK
+n_samples: 128
+# Random seeds
+seed: 0
+# Device
+device: cuda
+# Float precision
+float_precision: 32
+#It is strongly recommended to use double precision in BoTorch, as this improves both precision and stability and can help avoid numerical errors. See https://github.com/pytorch/botorch/discussions/1444
+al_n_rounds: 30
+do_figure: False
+
+multifidelity:
+  proxy: True
+  fixed_cost: 0.0
+  rescale: 1
+  fid_embed: one_hot
+  fid_embed_dim: None
+
+# Hydra config
+hydra:
+  # See: https://hydra.cc/docs/configure_hydra/workdir/
+  run:
+    dir: ${user.logdir.root}/${now:%Y-%m-%d_%H-%M-%S}
+  job:
+    # See: https://hydra.cc/docs/upgrades/1.1_to_1.2/changes_to_job_working_dir/
+    # See: https://hydra.cc/docs/tutorials/basic/running_your_app/working_directory/#disable-changing-current-working-dir-to-jobs-output-dir
+    chdir: True

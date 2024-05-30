@@ -1,7 +1,7 @@
 defaults:
   - base
   - ucb
-_target_: proxy.ucb.GaussianProcessUCB
+_target_: mfgfn.proxy.ucb.GaussianProcessUCB
 maximize: True #as GP is trained on negative on Oracle scores
 sampler:
   seed: 0

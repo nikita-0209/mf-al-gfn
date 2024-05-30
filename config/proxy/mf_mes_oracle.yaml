@@ -1,6 +1,6 @@
 defaults:
   - base
-_target_: proxy.mes.OracleMultiFidelityMES
+_target_: mfgfn.proxy.mes.OracleMultiFidelityMES
 data_path: /home/mila/n/nikita.saxena/activelearning/storage/grid/nfid3.csv
 cost_type: user
 maximize: True

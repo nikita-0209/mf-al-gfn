@@ -1,7 +1,7 @@
 defaults:
   - base
 
-_target_: utils.logger.AL_Logger
+_target_: mfgfn.utils.logger.AL_Logger
 
 project_name: "ActiveLearningPipeline"
 tags: 

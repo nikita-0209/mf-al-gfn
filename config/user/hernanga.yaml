@@ -1,0 +1,3 @@
+logdir:
+  root: /home/mila/h/hernanga/scratch/logs/mf-al-gfn
+data_path: /home/mila/h/hernanga/git/mf-al-gfn/storage

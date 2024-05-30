@@ -1,0 +1,122 @@
+# @package _global_
+
+defaults:
+  # - _self_
+  - env: grid
+  - oracle@_oracle_dict.1: branin1
+  - oracle@_oracle_dict.2: branin2
+  - oracle@_oracle_dict.3: branin3
+  - gflownet: trajectorybalance
+  - user: anonymous
+  - proxy: mf_mes_gp 
+  - regressor: mf_gp 
+  - logger: wandb
+  - dataset: dataset
+
+
+logger:
+  project_name: "MF-AL-GFN"
+  lightweight: False
+  plot:
+    period: -1
+    first_it: False
+  test:
+    period: -1 
+    n: 1 
+    first_it: False
+  oracle:
+    period: -1
+  do:
+    times: False
+    online: False
+  tags:
+    - default
+
+env:
+  min_reward: 1e-15
+  corr_type: None
+  proxy_state_format: state 
+  reward_func: power 
+  reward_beta: 1 #1 #80
+  length: 100
+  rescale: 15
+  reward_norm: 1 #1e-1 #1
+  buffer:
+    train:
+      path: null
+      n: null
+      type: null
+      seed: null
+      output_csv: null 
+    test:
+      path: null #data_test.csv
+      type: all
+      output_pkl: buffer_data_test.csv
+      n: null
+      seed: null
+      output_csv: null 
+    
+
+gflownet:
+  active_learning: True
+  sample_only: True
+  random_action_prob: 0.0
+  optimizer:
+    lr: 5e-4
+    lr_z_mult: 20
+    n_train_steps: 10000
+    batch_size: 16
+  policy:
+    forward:
+      type: mlp
+      n_hid: 2048
+      n_layers: 2
+      checkpoint: fp
+    backward:
+      type: mlp
+      shared_weights: True
+  pct_offline: 0.0
+  oracle:
+    n: 500
+
+dataset:
+  normalize_data: True
+  n_samples: 300
+  train_fraction: 0.8
+  split: all_train 
+  dataloader:
+    train:
+      batch_size: 256
+    test:
+      batch_size: 256
+  path:
+    type: mf #mf sf
+    oracle_dataset: null
+   
+n_samples: 30
+# Random seeds
+seed: 0
+# Device
+device: cuda
+# Float precision
+float_precision: 64
+#It is strongly recommended to use double precision in BoTorch, as this improves both precision and stability and can help avoid numerical errors. See https://github.com/pytorch/botorch/discussions/1444
+al_n_rounds: 10 #1
+do_figure: True
+multifidelity:
+  fid_embed: one_hot
+  fid_embed_dim: None
+  proxy: True
+  rescale: 10
+  candidate_set_path: null
+budget: 300
+
+# Hydra config
+hydra:
+  # See: https://hydra.cc/docs/configure_hydra/workdir/
+  run:
+    dir: ${user.logdir.root}/${now:%Y-%m-%d_%H-%M-%S}
+  job:
+    # See: https://hydra.cc/docs/upgrades/1.1_to_1.2/changes_to_job_working_dir/
+    # See: https://hydra.cc/docs/tutorials/basic/running_your_app/working_directory/#disable-changing-current-working-dir-to-jobs-output-dir
+    chdir: True

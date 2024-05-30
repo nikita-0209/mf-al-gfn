@@ -1,5 +1,0 @@
-_target_: proxy.rosenbrock.Rosenbrock
-n_dim: 4  # state + fid dim 2
-noise_sigma: 0.2
-fid: 0.5
-cost: 0.5

@@ -1,4 +1,4 @@
 defaults:
   - base
-_target_: proxy.mes.DeepKernelSingleFidelityMES
+_target_: mfgfn.proxy.mes.DeepKernelSingleFidelityMES
 maximize: True

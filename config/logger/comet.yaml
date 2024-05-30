@@ -1,6 +1,0 @@
-defaults:
-  - logger
-
-project: None
-tags:
-  - gflownet

@@ -1,7 +1,7 @@
 defaults:
   - base
   - ucb
-_target_: proxy.ucb.BotorchUCB
+_target_: mfgfn.proxy.ucb.BotorchUCB
 num_dropout_samples: 25
 sampler:
   seed: 0

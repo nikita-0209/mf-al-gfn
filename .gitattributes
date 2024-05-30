@@ -1,2 +1,9 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+storga* filter=lfs diff=lfs merge=lfs -text
+storage/amp filter=lfs diff=lfs merge=lfs -text
+storage/branin filter=lfs diff=lfs merge=lfs -text
+storage/dna filter=lfs diff=lfs merge=lfs -text
+storage/hartmann filter=lfs diff=lfs merge=lfs -text
+storage/mols filter=lfs diff=lfs merge=lfs -text
+*.csv filter=lfs diff=lfs merge=lfs -text

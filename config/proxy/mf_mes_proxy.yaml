@@ -1,6 +1,6 @@
 defaults:
   - base
-_target_: proxy.mes.ProxyMultiFidelityMES
+_target_: mfgfn.proxy.mes.ProxyMultiFidelityMES
 cost_type: user
 maximize: True
 num_dropout_samples: 25

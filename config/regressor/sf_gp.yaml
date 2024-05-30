@@ -1,1 +1,1 @@
-_target_: regressor.gp.SingleFidelitySingleTaskRegressor
+_target_: mfgfn.regressor.gp.SingleFidelitySingleTaskRegressor

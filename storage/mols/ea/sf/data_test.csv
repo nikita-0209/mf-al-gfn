@@ -1,0 +1,16 @@
+,samples,energies
+0,[N][C][=C][C][=C][C][=N][Ring1][=Branch1],-1.4538755210088703
+1,[N][C][=C][C][=C][C][=N][Ring1][=Branch1],-1.195980611761636
+2,[N][#C][C][=C][NH1][C][=C][C][=C][C][=C][Ring1][=Branch2][Ring1][=Branch1],-0.365067990429103
+3,[N][#C][C][=C][C][=C][NH1][C][=C][C][Ring1][Branch1][=C][Ring1][=Branch2],-0.4262258057832202
+4,[N][#C][C][=C][C][=C][C][NH1][C][=C][C][Ring1][=Branch2][=Ring1][Branch1],-0.0733003633604685
+5,[C][O][C][=C][C][Branch1][=Branch1][C][=Branch1][C][=O][O][=C][C][=C][Ring1][=Branch2][O],0.0331233118604572
+6,[C][C][C][=Branch1][C][=O][C][=C][C][=C][C][=C][Branch1][=Branch1][N][Branch1][C][C][C][C][=C][C][Ring1][=Branch2][=C][Ring1][=N],0.3957298699274654
+7,[C][O][C][=C][C][=C][C][=C][C][Ring1][=Branch1][=C][Branch1][Ring1][O][C][C][=C][Ring1][N][C][=C][Branch1][C][F][C][=C][C][=C][Ring1][#Branch1][N][Ring1][#Branch2][C],0.4445010161095739
+8,[C][=C][C][Branch1][=C][C][=C][C][=C][N][=C][NH1][C][Ring1][Branch1][=C][Ring1][=Branch2][=C][C][=C][C][Branch2][Ring1][#Branch1][C][=C][C][=C][O][C][Branch1][Branch2][C][C][=C][O][C][=Ring1][Branch1][=N][C][Ring1][#Branch2][=C][Ring1][=C][=N][C][Ring2][Ring1][Ring2][=C][Ring2][Ring1][P],1.0854121571727022
+9,[C][O][C][=N][C][Branch2][Ring1][#Branch2][N][C][=C][C][=C][C][=C][C][=C][C][=C][C][=C][C][=C][Ring1][=C][C][Ring1][N][=C][Ring1][#Branch2][Ring1][=Branch1][=N][C][Branch1][Ring1][O][C][=N][Ring2][Ring1][=Branch2],1.0107039653432048
+10,[C][C][C][C][C][=C][C][Branch1][Branch2][C][=Branch1][C][=O][C][C][C][=C][C][=C][C][=C][Branch1][Branch1][C][C][C][C][C][=C][Branch1][=Branch2][N][C][C][C][C][C][Ring1][=Branch1][C][=C][C][=C][Ring2][Ring1][=N][C][Ring2][Ring1][=Branch1][=C][Ring2][Ring1][Ring2][Ring1][=Branch1],0.9374358585986844
+11,[C][=C][C][=C][C][=Branch1][#Branch2][=C][C][=C][C][Ring1][=Branch1][=C][Ring1][#Branch2][C][Branch2][Ring2][Branch2][N][C][C][O][C][C][O][C][C][N][Branch2][Ring1][Ring1][C][=N][C][=C][C][=C][C][=C][C][=C][C][Ring1][O][=C][Ring1][#Branch2][Ring1][=Branch1][C][C][O][C][C][Ring2][Ring1][O][=N][Ring2][Ring2][Branch1],1.1495421884681436
+12,[C][C][C][C][C][C][N][C][=Branch1][C][=O][C][=C][C][=C][C][=C][Branch1][O][C][=C][C][=C][Branch1][C][Cl][S][Ring1][=Branch1][C][=C][C][=Branch1][=Branch1][=C][Ring1][S][Ring1][N][C][Ring2][Ring1][Ring2][=O],1.9674793183685448
+13,[N][#C][C][=C][C][Branch1][Ring1][C][#N][=C][Branch2][Ring1][P][C][=N][C][=N][C][Branch2][Ring1][Branch1][C][=C][C][=C][N][=C][C][=C][C][=C][C][Ring1][=Branch1][=N][C][Ring1][#Branch2][=C][Ring1][=C][=N][Ring2][Ring1][Ring2][C][Branch1][Ring1][C][#N][=C][Ring2][Ring1][=C][C][=C][C][=C][C][=C][Ring1][=Branch1],2.666167076128134
+14,[F][C][Branch1][C][F][Branch1][C][F][C][=C][C][=C][N][=C][C][=C][Branch2][Ring1][Branch2][C][=N][C][=C][Branch1][#C][C][=C][N][=C][C][=C][C][=C][C][Ring1][=Branch1][=N][Ring1][#Branch2][O][Ring1][#C][C][=C][C][Ring2][Ring1][Branch1][=N][C][Ring2][Ring1][=Branch2][=C][Ring2][Ring1][=N],2.600726665960785

@@ -1,4 +1,4 @@
-_target_: model.multi_fidelity_mlp.MultiFidelityMLP
+_target_: mfgfn.model.multi_fidelity_mlp.MultiFidelityMLP
 
 # if False, each fidelity has a separate fully connected module
 shared_head: True

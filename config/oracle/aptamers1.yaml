@@ -1,0 +1,3 @@
+_target_: mfgfn.proxy.aptamers_nn.AptamersNN
+cost: 0.2
+maximize: False

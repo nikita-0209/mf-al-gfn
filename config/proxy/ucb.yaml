@@ -1,5 +1,5 @@
 defaults:
   - base
-_target_: proxy.ucb.UCB
+_target_: mfgfn.proxy.ucb.UCB
 kappa: 0.1
 num_dropout_samples: 25

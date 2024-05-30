@@ -1,5 +1,5 @@
 defaults:
   - base
-_target_: proxy.mes.DeepKernelMultiFidelityMES
+_target_: mfgfn.proxy.mes.DeepKernelMultiFidelityMES
 cost_type: user
 maximize: True

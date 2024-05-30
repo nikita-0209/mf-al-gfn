@@ -1,4 +1,4 @@
-_target_: dataset.DataHandler
+_target_: mfgfn.utils.dataset.DataHandler
 
 normalize_data: False
 train_fraction: 0.8
