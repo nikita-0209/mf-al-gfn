@@ -259,10 +259,7 @@ def main(config):
             states, times = gflownet.sample_batch(
                 env, config.n_samples * 5, train=False
             )
-            # fid_chosen_at_random = np.random.randint(0, N_FID, (len(states),))
-            cost_lst = list(env.fidelity_costs.values())
-            fid_chosen_from_inverse_cost_distribution = sample_inverse_cost(N_FID, cost_lst, len(states))
-            fid_chosen_at_random = fid_chosen_from_inverse_cost_distribution
+            fid_chosen_at_random = np.random.randint(0, N_FID, (len(states),))
             # Replace the fidelity with the fidelities sampled from the distribution.
             for idx, state in enumerate(states):
                 state[-1] = fid_chosen_at_random[idx]
