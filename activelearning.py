@@ -22,7 +22,7 @@ from mfgfn.utils.common import get_figure_plots
 from mfgfn.utils.eval_al_round import evaluate
 import pickle
 
-@hydra.main(config_path="./config", config_name="default")
+@hydra.main(config_path="./config", config_name="mf_mols_ea")
 def main(config):
     if config.logger.logdir.root != "./logs":
         os.chdir(config.logger.logdir.root)
@@ -263,9 +263,10 @@ def main(config):
             cost_lst = list(env.fidelity_costs.values())
             fid_chosen_from_inverse_cost_distribution = sample_inverse_cost(N_FID, cost_lst, len(states))
             fid_chosen_at_random = fid_chosen_from_inverse_cost_distribution
-            
+            # Replace the fidelity with the fidelities sampled from the distribution.
             for idx, state in enumerate(states):
                 state[-1] = fid_chosen_at_random[idx]
+            
             if isinstance(states[0], list):
                 states_tensor = torch.tensor(states)
             else:

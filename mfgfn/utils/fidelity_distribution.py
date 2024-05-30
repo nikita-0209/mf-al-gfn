@@ -4,8 +4,8 @@ def sample_inverse_cost(n_fid, cost_lst, k=1):
     """Samples k elements from list A with probabilities proportional to 1/C.
 
     Args:
-        A: List of items to sample from.
-        C: List of corresponding costs.
+        n_fid: List of items to sample from.
+        cost_lst: List of corresponding costs.
         k: Number of items to sample (default 1).
 
     Returns:
@@ -17,6 +17,6 @@ def sample_inverse_cost(n_fid, cost_lst, k=1):
     probabilities = inverse_costs / inverse_costs.sum()
 
     # Sample from the list using calculated probabilities
-    sampled_indices = np.random.choice(n_fid, size=k, replace=False, p=probabilities)
+    sampled_indices = np.random.choice(n_fid, size=k, replace=True, p=probabilities)
 
     return sampled_indices
