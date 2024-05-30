@@ -93,8 +93,8 @@ dataset:
     type: mf
     oracle_dataset: 
       train:
-        path: /home/nikitasaxena_google_com/workspace/mila/mf-al-gfn/storage/hartmann/mf/data_train.csv
-        # path: ${user.data_path}/hartmann/${dataset.path.type}/data_train.csv
+        # path: /home/nikitasaxena_google_com/workspace/mila/mf-al-gfn/storage/hartmann/mf/data_train.csv
+        path: ${user.data_path}/hartmann/${dataset.path.type}/data_train.csv
         get_scores: True
       test: null
     
