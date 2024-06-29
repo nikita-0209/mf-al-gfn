@@ -62,7 +62,7 @@ class LanguageModel(nn.Module):
         optimizer.zero_grad(set_to_none=True)
         mask_ratio = self.mask_ratio
         if n_fid > 1:
-            input_batch = input_batch[..., :-1]
+            input_batch = input_batch[..., :-1].to(self.device).type(torch.LongTensor)
         # replace random tokens with mask token
         mask_idxs = sample_mask(input_batch, self.tokenizer, mask_ratio)
         masked_token_batch = input_batch.clone().to(self.device)

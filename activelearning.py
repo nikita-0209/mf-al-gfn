@@ -21,7 +21,7 @@ from mfgfn.utils.common import get_figure_plots
 from mfgfn.utils.eval_al_round import evaluate
 
 
-@hydra.main(config_path="./config", config_name="default")
+@hydra.main(config_path="./config", config_name="mf_mols_ea")
 def main(config):
     if config.logger.logdir.root != "./logs":
         os.chdir(config.logger.logdir.root)
@@ -297,6 +297,9 @@ def main(config):
                     picked_samples, picked_fidelity
                 )
                 energies_for_evaluation = oracle(picked_samples)
+                # # HACK for ABSENCE OF MOL SETUP
+                # picked_energies = torch.rand_like(picked_energies)
+                # energies_for_evaluation = torch.rand_like(energies_for_evaluation)
                 if isinstance(oracle, MoleculeOracle):
                     hf_idxNaN = torch.isnan(energies_for_evaluation)
                     cf_idxNaN = torch.isnan(picked_energies)

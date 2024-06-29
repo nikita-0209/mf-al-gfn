@@ -489,7 +489,7 @@ class DeepKernelMultiFidelityMES(MES):
         #     state_proxy = state_proxy[..., :-1]
         if isinstance(self.regressor, DeepKernelRegressor) == True:
             if hasattr(self.regressor.language_model, "get_token_features"):
-                state_proxy = state_proxy[..., :-1]
+                state_proxy = state_proxy[..., :-1].type(torch.LongTensor).to(self.device)
                 (
                     input_tok_features,
                     input_mask,
@@ -516,9 +516,14 @@ class DeepKernelMultiFidelityMES(MES):
         # print(
         #     "User Defined Warning: In MES-project, fidelity is being replace by the INDEX (not oracle.fid) of the maximum fidelity."
         # )
-        max_fid = torch.ones((states.shape[0], 1), device=self.device).long() * (
-            self.n_fid - 1
-        )
+        if self.env.proxy_state_format == "state_normfid":
+            # max fidelity is 1, as fidelitlies are normalized in this implementation.
+            max_fid = torch.ones((states.shape[0], 1), device=self.device).long()
+        else:
+            # max fidelity is simply the max possible index
+            max_fid = torch.ones((states.shape[0], 1), device=self.device).long() * (
+                self.n_fid - 1
+            )
         if input_dim == 3:
             states = states[:, :, :-1]
             max_fid = max_fid.unsqueeze(1)
@@ -534,7 +539,7 @@ class DeepKernelMultiFidelityMES(MES):
         if isinstance(self.regressor, DeepKernelRegressor) == True:
             if hasattr(self.regressor.language_model, "get_token_features"):
                 if self.regressor.language_model.is_fid_param is False:
-                    inputs = inputs[..., :-1]
+                    inputs = inputs[..., :-1].type(torch.LongTensor).to(self.device)
                 (
                     input_tok_features,
                     input_mask,
