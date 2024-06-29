@@ -21,7 +21,7 @@ from mfgfn.utils.common import get_figure_plots
 from mfgfn.utils.eval_al_round import evaluate
 
 
-@hydra.main(config_path="./config", config_name="mf_mols_ea")
+@hydra.main(config_path="./config", config_name="default")
 def main(config):
     if config.logger.logdir.root != "./logs":
         os.chdir(config.logger.logdir.root)
