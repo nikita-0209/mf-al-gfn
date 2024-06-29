@@ -45,7 +45,7 @@ logger:
 env:
   denorm_proxy: False #True for ucb, False for mes
   corr_type: None #from_trajectory
-  proxy_state_format: state
+  proxy_state_format: state_normfid
   reward_func: power 
   reward_beta: 1 #0.2 for ucb and 2e1 for mes
   norm_factor: 2
