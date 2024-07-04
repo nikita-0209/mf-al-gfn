@@ -24,7 +24,7 @@ class AMP(GFlowNetEnv, GflowNetAMP):
         elif self.proxy_state_format == "oracle":
             self.statebatch2proxy = self.statebatch2oracle
             self.statetorch2proxy = self.statetorch2oracle
-        elif self.proxy_state_format == "state":
+        elif self.proxy_state_format == "state" or self.proxy_state_format == "state_normfid":
             self.statebatch2proxy = self.statebatch2state
             self.statetorch2proxy = self.statetorch2state
         else:

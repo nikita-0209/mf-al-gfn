@@ -42,7 +42,7 @@ class MultiFidelityEnvWrapper(GFlowNetEnv):
         self.is_state_list = True
         if isinstance(self.env.source, TensorType):
             self.is_state_list = False
-        self.n_fid = n_fid
+        self.n_fid = n_fid # number of oracles (>1 for multi-fidelity)
         self.fid = self.env.eos + 1
         # Required for variables like reward_norm, reward_beta
         vars(self).update(vars(self.env))
@@ -53,20 +53,31 @@ class MultiFidelityEnvWrapper(GFlowNetEnv):
         self.policy_output_dim = len(self.fixed_policy_output)
         self.random_policy_output = self.fixed_policy_output
         if proxy_state_format == "oracle":
-            # Assumes that all oracles required the same kind of transformed dtata
+            # Assumes that all oracles required the same kind of transformed data
             self.statebatch2proxy = self.statebatch2oracle_joined
             self.statetorch2proxy = self.statetorch2oracle_joined
         elif proxy_state_format == "ohe":
             self.statebatch2proxy = self.statebatch2policy
             self.statetorch2proxy = self.statetorch2policy
         elif proxy_state_format == "state":
+            # represents fid as index
             self.statebatch2proxy = self.statebatch2state
             self.statetorch2proxy = self.statetorch2state
             if isinstance(self.env, Grid):
                 # only for synthetic functions like branin and hartmann
                 self.statetorch2oracle = self.state_from_statefid
                 self.statebatch2oracle = self.state_from_statefid
+        elif proxy_state_format == "state_normfid":
+            self.statebatch2proxy = self.statebatch2state_normfid
+            self.statetorch2proxy = self.statetorch2state_normfid
+            if isinstance(self.env, Grid):
+                # only for synthetic functions like branin and hartmann,
+                # because the gpytorch oracle takes input in the state format
+                # and adds the fidelity as the last dimension
+                self.statetorch2oracle = self.state_from_statefid
+                self.statebatch2oracle = self.state_from_statefid
         elif proxy_state_format == "state_fidIdx":
+            # Deprecated.
             self.statebatch2proxy = self.statebatch2state_longFid
             self.statetorch2proxy = self.statetorch2state_longFid
             if isinstance(self.env, Grid):
@@ -75,6 +86,7 @@ class MultiFidelityEnvWrapper(GFlowNetEnv):
                 self.statebatch2oracle = self.state_from_statefid
         else:
             raise ValueError("Invalid proxy_state_format")
+        self.proxy_state_format = proxy_state_format
         self.oracle = oracle
         self.fidelity_costs = self.set_fidelity_costs()
         if self.is_state_list:
@@ -159,7 +171,7 @@ class MultiFidelityEnvWrapper(GFlowNetEnv):
                 updated_fidelities[idx_fid] = self.oracle[fid].fid
         states = torch.cat([states, updated_fidelities], dim=-1)
         return states
-
+    
     def statetorch2state(self, states):
         if isinstance(states, TensorType) == False:
             raise ValueError("States should be a tensor")
@@ -173,6 +185,44 @@ class MultiFidelityEnvWrapper(GFlowNetEnv):
         for fid in range(self.n_fid):
             idx_fid = torch.where(fidelities == fid)[0]
             updated_fidelities[idx_fid] = self.oracle[fid].fid
+        states = torch.cat([states, updated_fidelities.unsqueeze(-1)], dim=-1)
+        return states
+    
+    def statebatch2state_normfid(self, states: List[TensorType["state_dim"]]):
+        """
+        Input: List of states where states can be tensors or lists
+        """
+        state, fid_list = zip(*[[state[:-1], state[-1]] for state in states])
+        states = self.env.statebatch2state(list(state))
+        if self.is_state_list:
+            fidelities = torch.tensor(
+                fid_list, device=states.device, dtype=states.dtype
+            ).unsqueeze(-1)
+        else:
+            fidelities = torch.vstack(fid_list).to(states.dtype).to(states.device)
+        updated_fidelities = torch.zeros_like(fidelities, dtype=self.float, device=self.device)
+        for fid in range(self.n_fid):
+            idx_fid = torch.where(fidelities == fid)[0]
+            if idx_fid.numel() > 0:
+                norm_fid = self.oracle[fid].cost / self.oracle[self.n_fid-1].cost
+                updated_fidelities[idx_fid] = norm_fid
+        states = torch.cat([states, updated_fidelities], dim=-1)
+        return states
+
+    def statetorch2state_normfid(self, states):
+        if isinstance(states, TensorType) == False:
+            raise ValueError("States should be a tensor")
+        else:
+            states = states.to(self.float).to(self.device)
+        fidelities = states[:, -1]
+        states = states[:, :-1]
+        states = self.env.statetorch2state(states)
+        fidelities = fidelities.to(states.dtype).to(states.device)
+        updated_fidelities = torch.zeros_like(fidelities, dtype=self.float, device=self.device)
+        for fid in range(self.n_fid):
+            idx_fid = torch.where(fidelities == fid)[0]
+            norm_fid = self.oracle[fid].cost / self.oracle[self.n_fid-1].cost
+            updated_fidelities[idx_fid] = norm_fid
         states = torch.cat([states, updated_fidelities.unsqueeze(-1)], dim=-1)
         return states
 
@@ -349,6 +399,7 @@ class MultiFidelityEnvWrapper(GFlowNetEnv):
             if len(state) > 0 and fid != -1:
                 fid_policy[fid] = 1
         elif self.fid_embed == "thermometer":
+            # Deprecated. Not used in the current implementation.
             per_fid_dimension = int(self.fid_embed_dim / self.n_fid)
             fid_policy = np.zeros((per_fid_dimension * self.n_fid), dtype=np.float32)
             if len(state) > 0 and fid != -1:
@@ -370,6 +421,7 @@ class MultiFidelityEnvWrapper(GFlowNetEnv):
             if index.size:
                 fid_policy[index, fid_array[index]] = 1
         elif self.fid_embed == "thermometer":
+            # Deprecated. Not used in the current implementation.
             per_fid_dimension = int(self.fid_embed_dim / self.n_fid)
             fid_policy = np.zeros(
                 (len(states), per_fid_dimension * self.n_fid), dtype=np.float32

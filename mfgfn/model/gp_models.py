@@ -506,7 +506,7 @@ class SingleTaskMultiFidelityLikeBotorchSVGP(
         original_shape = seq_array.shape[:-1]
         flat_seq_array = seq_array.flatten(end_dim=-2)
         enc_seq_array = seq_array.to(self.device)
-        state_array = enc_seq_array[..., :-1]
+        state_array = enc_seq_array[..., :-1].type(torch.LongTensor).to(self.device)
         fid_array = seq_array[..., -1].to(self.device)
         if self.is_fid_param_nn == True:
             features = self.encoder.get_features(enc_seq_array)
