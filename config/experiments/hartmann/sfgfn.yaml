@@ -11,7 +11,7 @@ defaults:
   - /logger: wandb
 
 logger:
-  project_name: "MF-GFN-AL"
+  project_name: "MF-AL-GFN"
   lightweight: False
   plot:
     period: -1
