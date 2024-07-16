@@ -11,17 +11,18 @@ from typing import List
 import hydra
 import matplotlib.pyplot as plt
 import numpy as np
+
 import torch
 from omegaconf import OmegaConf
-
+from mfgfn.utils.fidelity_distribution import sample_inverse_cost
 from mfgfn.env.mfenv import MultiFidelityEnvWrapper
 from mfgfn.proxy.mol_oracles.mol_oracle import MoleculeOracle
 from mfgfn.regressor.dkl import Tokenizer
 from mfgfn.utils.common import get_figure_plots
 from mfgfn.utils.eval_al_round import evaluate
+import pickle
 
-
-@hydra.main(config_path="./config", config_name="default")
+@hydra.main(config_path="./config", config_name="mf_mols_ea")
 def main(config):
     if config.logger.logdir.root != "./logs":
         os.chdir(config.logger.logdir.root)
@@ -258,6 +259,14 @@ def main(config):
             states, times = gflownet.sample_batch(
                 env, config.n_samples * 5, train=False
             )
+            # fid_chosen_at_random = np.random.randint(0, N_FID, (len(states),))
+            cost_lst = list(env.fidelity_costs.values())
+            fid_chosen_from_inverse_cost_distribution = sample_inverse_cost(N_FID, cost_lst, len(states))
+            fid_chosen_at_random = fid_chosen_from_inverse_cost_distribution
+            # Replace the fidelity with the fidelities sampled from the distribution.
+            for idx, state in enumerate(states):
+                state[-1] = fid_chosen_at_random[idx]
+            
             if isinstance(states[0], list):
                 states_tensor = torch.tensor(states)
             else:

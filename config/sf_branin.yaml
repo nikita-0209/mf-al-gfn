@@ -3,12 +3,24 @@
 defaults:
   # - _self_
   - env: grid
-  - oracle@_oracle_dict.1: branin
-  - gflownet: ppo
-  - user: anonymous
-  - proxy: mes_gp 
+  # Required so that it can be set up in the environment and used for scoring
+  # - true_oracle: branin
+  # - oracle@_oracle_dict.1: branin
+  - oracle@_oracle_dict.1: branin1
+  - oracle@_oracle_dict.2: branin2
+  - oracle@_oracle_dict.3: branin3
+  - gflownet: trajectorybalance
+  - user: nikita
+  - proxy: mf_mes_gp #mf_mes_svgp #mes_gp  #mf_mes_gp #gp_ucb #mf_mes_dkl mes_gp
   - dataset: dataset
-  - regressor: sf_gp 
+  - regressor: mf_gp #mf_dkl_linear #mf_svgp #mf_dkl #sf_svgp #sf_dkl #mf_gp #mf_dkl #sf_gp
+  # - model: mlp #regressive
+  # - oracle@_oracle_dict.1: branin
+  # - gflownet: ppo
+  # - user: anonymous
+  # - proxy: mes_gp 
+  # - dataset: dataset
+  # - regressor: sf_gp 
   - logger: wandb
 
 logger:
@@ -37,8 +49,10 @@ env:
   reward_func: power 
   reward_beta: 1 
   length: 100
-  rescale: 10
-  reward_norm: 1 
+  rescale: 15
+  reward_norm: 1e-2 #1e-1 #1
+  # rescale: 10
+  # reward_norm: 1 
   buffer:
     train:
       path: null
@@ -62,7 +76,7 @@ gflownet:
   optimizer:
     lr: 5e-4
     lr_z_mult: 20
-    n_train_steps: 10000
+    n_train_steps: 5000
     batch_size: 16
   policy:
     forward:
@@ -99,7 +113,7 @@ dataset:
 # Sample 5*K and choose topK
 n_samples: 30
 # Random seeds
-seed: 0
+seed: 16
 # Device
 device: cuda
 # Float precision

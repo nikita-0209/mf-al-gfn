@@ -7,7 +7,7 @@ defaults:
   - oracle@_oracle_dict.2: mols_ea2
   - oracle@_oracle_dict.3: mols_ea3
   - gflownet: trajectorybalance
-  - user: anonymous
+  - user: nikita
   - proxy: mf_mes_dkl 
   - dataset: dataset
   - regressor: mf_dkl_linear

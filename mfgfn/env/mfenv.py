@@ -3,7 +3,6 @@ import itertools
 import time
 from abc import abstractmethod
 from typing import List, Tuple
-
 import matplotlib.pyplot as plt
 import numpy as np
 import numpy.typing as npt
@@ -14,6 +13,7 @@ from torchtyping import TensorType
 
 from mfgfn.env.grid import Grid
 from mfgfn.proxy.mol_oracles.mol_oracle import MoleculeOracle
+
 
 
 class MultiFidelityEnvWrapper(GFlowNetEnv):
@@ -95,6 +95,36 @@ class MultiFidelityEnvWrapper(GFlowNetEnv):
             self.source = torch.cat((self.env.source, torch.tensor([-1])))
         self._test_traj_list = []
         self._test_traj_actions_list = []
+
+    def reward_torchbatch(self, states: TensorType, done: TensorType = None):
+        if done is None:
+            done = torch.ones(states.shape[0], dtype=torch.bool, device=self.device)
+        done_states = states[done, :]
+        # randomly select fidelity from 0 to 3
+        fid_chosen_at_random = torch.randint(
+            0, self.n_fid, (done_states.shape[0],), device=self.device
+        )
+        done_states[:, -1] = fid_chosen_at_random
+        states_proxy = self.statetorch2proxy(done_states)  # 32 x 7
+        reward = torch.zeros(
+            states.shape[0], dtype=self.float, device=self.device
+        )  # 250
+        if len(done_states) > 0:
+            with torch.no_grad():
+                reward[done] = self.proxy2reward(self.proxy(states_proxy))
+        return reward
+
+    def reward_batch(self, states, done=None):
+        if done is None:
+            done = np.ones(len(states), dtype=bool)
+        fid_chosen_at_random = np.random.randint(0, self.n_fid, (len(states),))
+        for idx, state in enumerate(states):
+            state[-1] = fid_chosen_at_random[idx]
+        states_proxy = self.statebatch2proxy(states)[list(done), :]
+        rewards = np.zeros(len(done))
+        if states_proxy.shape[0] > 0:
+            rewards[list(done)] = self.proxy2reward(self.proxy(states_proxy)).tolist()
+        return rewards
 
     def write_samples_to_file(self, samples, path):
         samples = [self.state2readable(state) for state in samples]
